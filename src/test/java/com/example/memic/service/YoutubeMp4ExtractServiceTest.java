@@ -10,7 +10,7 @@ class YoutubeMp4ExtractServiceTest {
 
     @Test
     void 유튜브_비디오_추출() throws Exception {
-        final var service = new YoutubeMp4Extractor();
+        final var service = new YoutubeMp4Extractor("/Users/jung-yunho/youtube-mp3/", "yt-dlp");
         String output = service.extractVideo("https://youtu.be/lpcpsCY4Mco?si=_rxzxxH-fuE78HDf");
         assertThat(output).contains("100%");
     }

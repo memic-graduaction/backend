@@ -29,6 +29,7 @@ dependencies {
     implementation 'com.github.sapher:youtubedl-java:2cbe41f'
     runtimeOnly 'com.mysql:mysql-connector-j'
     annotationProcessor 'org.projectlombok:lombok'
+    runtimeOnly 'com.h2database:h2:1.4.200'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
 }
 

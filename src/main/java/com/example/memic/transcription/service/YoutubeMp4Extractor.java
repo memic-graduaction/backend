@@ -16,8 +16,8 @@ public class YoutubeMp4Extractor {
     private final String command;
 
     public YoutubeMp4Extractor(
-            @Value("${extractor.outputFormat") String outputFormat,
-            @Value("${extractor.command") String command
+            @Value("${extractor.outputFormat}") String outputFormat,
+            @Value("${extractor.command}") String command
     ) {
         this.outputFormat = outputFormat;
         this.command = command;

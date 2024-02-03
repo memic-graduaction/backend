@@ -1,12 +1,28 @@
 package com.example.memic.transcription.domain;
 
 import com.example.memic.transcription.exception.InvalidTranscriptionException;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 import java.time.LocalTime;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
+@Entity
+@NoArgsConstructor
+@Getter
+@Setter
 public class Sentence {
 
-    private final LocalTime startPoint;
-    private final String content;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id
+    private Long id;
+
+    private LocalTime startPoint;
+
+    private String content;
 
     public Sentence(LocalTime startPoint, String content) {
         validate(content);

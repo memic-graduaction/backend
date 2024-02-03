@@ -1,14 +1,35 @@
 package com.example.memic.transcription.domain;
 
 import com.example.memic.transcription.exception.InvalidTranscriptionException;
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToMany;
 import java.time.LocalTime;
 import java.util.List;
 import java.util.Map;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
+@Entity
+@NoArgsConstructor
+@Getter
+@Setter
 public class Transcription {
 
-    private final String url;
-    private final List<Sentence> sentences;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id
+    private Long id;
+
+    private String url;
+
+    @OneToMany(cascade = CascadeType.PERSIST)
+    @JoinColumn(name = "transcription_id", updatable = false, nullable = false)
+    private List<Sentence> sentences;
 
     public Transcription(String url, Map<LocalTime, String> sentences) {
         validate(url);
