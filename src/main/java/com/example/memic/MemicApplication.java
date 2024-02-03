@@ -9,5 +9,4 @@ public class MemicApplication {
     public static void main(String[] args) {
         SpringApplication.run(MemicApplication.class, args);
     }
-
 }
