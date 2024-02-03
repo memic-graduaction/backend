@@ -1,5 +1,6 @@
 package com.example.memic.transcription.service;
 
+import com.example.memic.transcription.infrastructure.WhisperApiClient;
 import java.time.LocalTime;
 import java.util.Map;
 import org.assertj.core.api.SoftAssertions;
@@ -8,10 +9,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class TranscriptionServiceTest {
+class WhisperApiClientTest {
 
     @Autowired
-    TranscriptionService service;
+    private WhisperApiClient whisperApiClient;
 
     @Test
     void 텍스트_파일을_파싱해서_시간과_문장으로_나눈다() {
@@ -28,7 +29,7 @@ class TranscriptionServiceTest {
                 """;
 
         //when
-        Map<LocalTime, String> parsed = service.parseLogText(text);
+        Map<LocalTime, String> parsed = whisperApiClient.parseLogText(text);
 
         //then
         SoftAssertions.assertSoftly(
