@@ -52,8 +52,7 @@ public class WhisperApiClient {
         body.add("model", "whisper-1");
         body.add("response_format", "srt");
 
-        HttpEntity<MultiValueMap<String, Object>> requestEntity = new HttpEntity<>(body);
-        return requestEntity;
+      return new HttpEntity<>(body);
     }
 
     public String processTranscription(String transcription) {
@@ -76,7 +75,7 @@ public class WhisperApiClient {
     }
 
     private String formatTime(String time) {
-        return time.replaceFirst("^0", "").replaceAll(",\\d+$", "");
+        return time.replaceAll(",\\d+$", "");
     }
 
 
