@@ -83,7 +83,7 @@ public class WhisperApiClient {
         Map<LocalTime, String> logMap = new HashMap<>();
         String[] lines = text.split("\n");
 
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("H:mm:ss");
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss");
 
         for (String line : lines) {
             String[] parts = line.split("]", 2);

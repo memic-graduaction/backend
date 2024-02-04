@@ -66,6 +66,6 @@ class TranscriptionIntegrationTest {
         transcriptionResponseFromGet.sentences().forEach(e -> System.out.println(e.startPoint()));
 
         assertThat(transcriptionResponseFromPost).isEqualTo(transcriptionResponseFromGet);
-        assertThat(transcriptionResponseFromPost.sentences()).isSortedAccordingTo(Comparator.comparing(SentenceResponse::sentence));
+        assertThat(transcriptionResponseFromPost.sentences()).isSortedAccordingTo(Comparator.comparing(SentenceResponse::startPoint));
     }
 }
