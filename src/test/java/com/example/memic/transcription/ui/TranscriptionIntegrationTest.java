@@ -7,9 +7,11 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import com.example.memic.transcription.dto.SentenceResponse;
 import com.example.memic.transcription.dto.TranscriptionCreateRequest;
 import com.example.memic.transcription.dto.TranscriptionResponse;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import java.util.Comparator;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -61,6 +63,9 @@ class TranscriptionIntegrationTest {
                 TranscriptionResponse.class
         );
 
+        transcriptionResponseFromGet.sentences().forEach(e -> System.out.println(e.startPoint()));
+
         assertThat(transcriptionResponseFromPost).isEqualTo(transcriptionResponseFromGet);
+        assertThat(transcriptionResponseFromPost.sentences()).isSortedAccordingTo(Comparator.comparing(SentenceResponse::sentence));
     }
 }
