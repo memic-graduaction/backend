@@ -21,27 +21,28 @@ import lombok.Setter;
 @Setter
 public class Transcription {
 
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Id
-    private Long id;
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  @Id
+  private Long id;
 
-    private String url;
+  private String url;
 
-    @OneToMany(cascade = CascadeType.PERSIST)
-    @JoinColumn(name = "transcription_id", updatable = false, nullable = false)
-    private List<Sentence> sentences;
+  @OneToMany(cascade = CascadeType.PERSIST)
+  @JoinColumn(name = "transcription_id", updatable = false, nullable = false)
+  private List<Sentence> sentences;
 
-    public Transcription(String url, Map<LocalTime, String> sentences) {
-        validate(url);
-        this.url = url;
-        this.sentences = sentences.entrySet().stream()
-                .map(entry -> new Sentence(entry.getKey(), entry.getValue()))
-                .toList();
+  public Transcription(String url, Map<LocalTime, String> sentences) {
+    validate(url);
+    this.url = url;
+    this.sentences = sentences.entrySet().stream()
+                              .map(entry -> new Sentence(entry.getKey(), entry.getValue()))
+                              .sorted()
+                              .toList();
+  }
+
+  private void validate(String url) {
+    if (!url.startsWith("https://")) {
+      throw new InvalidTranscriptionException("https 형식의 오디오 주소가 아닙니다.");
     }
-
-    private void validate(String url) {
-        if (!url.startsWith("https://")) {
-            throw new InvalidTranscriptionException("https 형식의 오디오 주소가 아닙니다.");
-        }
-    }
+  }
 }

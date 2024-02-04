@@ -52,8 +52,7 @@ public class WhisperApiClient {
         body.add("model", "whisper-1");
         body.add("response_format", "srt");
 
-        HttpEntity<MultiValueMap<String, Object>> requestEntity = new HttpEntity<>(body);
-        return requestEntity;
+      return new HttpEntity<>(body);
     }
 
     public String processTranscription(String transcription) {
@@ -76,7 +75,7 @@ public class WhisperApiClient {
     }
 
     private String formatTime(String time) {
-        return time.replaceFirst("^0", "").replaceAll(",\\d+$", "");
+        return time.replaceAll(",\\d+$", "");
     }
 
 
@@ -84,7 +83,7 @@ public class WhisperApiClient {
         Map<LocalTime, String> logMap = new HashMap<>();
         String[] lines = text.split("\n");
 
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("H:mm:ss");
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss");
 
         for (String line : lines) {
             String[] parts = line.split("]", 2);

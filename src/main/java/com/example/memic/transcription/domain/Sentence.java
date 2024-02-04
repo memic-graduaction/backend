@@ -14,7 +14,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @Getter
 @Setter
-public class Sentence {
+public class Sentence implements Comparable<Sentence> {
 
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
@@ -34,5 +34,10 @@ public class Sentence {
         if (content == null || content.isBlank()) {
             throw new InvalidTranscriptionException("스크립트 내용이 비어있습니다.");
         }
+    }
+
+    @Override
+    public int compareTo(Sentence o) {
+        return this.startPoint.compareTo(o.startPoint);
     }
 }
