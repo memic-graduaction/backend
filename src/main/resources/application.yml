@@ -12,7 +12,7 @@ spring:
     activate:
       on-profile: local
   datasource:
-    url: jdbc:h2:mem:~/testdb;MODE=MySQL
+    url: jdbc:h2:mem:testdb;MODE=MySQL;
     driver-class-name: org.h2.Driver
   jpa:
     hibernate:
@@ -24,3 +24,21 @@ spring:
   h2:
     console:
       enabled: true
+
+---
+spring:
+  config:
+    activate:
+      on-profile: dev
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/test?serverTimezone=Asia/Seoul
+    username: root
+    password: 1234
+  jpa:
+    hibernate:
+      ddl-auto: create
+    properties:
+      hibernate:
+        format_sql: true
+        show_sql: true
