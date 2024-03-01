@@ -2,6 +2,7 @@ package com.example.memic.transcription.infrastructure;
 
 import com.example.memic.speech.domain.Speech;
 import com.example.memic.transcription.domain.Transcription;
+import com.example.memic.transcription.exception.ImageToByteException;
 import java.io.IOException;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
@@ -71,7 +72,7 @@ public class WhisperApiClient {
             body.add("model", "whisper-1");
             body.add("response_format", "json");
         } catch (IOException e) {
-            throw new RuntimeException("Error in reading or converting file", e);
+            throw new ImageToByteException(e);
         }
 
         return new HttpEntity<>(body, headers);
