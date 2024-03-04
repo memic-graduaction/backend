@@ -1,4 +1,4 @@
-package com.example.memic.transcription.service;
+package com.example.memic.transcription.application;
 
 import com.example.memic.transcription.infrastructure.WhisperApiClient;
 import java.time.LocalTime;

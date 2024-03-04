@@ -2,7 +2,7 @@ package com.example.memic.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import com.example.memic.transcription.service.YoutubeMp4Extractor;
+import com.example.memic.transcription.application.YoutubeMp4Extractor;
 import org.junit.jupiter.api.Test;
 
 @SuppressWarnings("NonAsciiCharacters")

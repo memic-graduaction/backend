@@ -1,4 +1,4 @@
-package com.example.memic.speech.domain;
+package com.example.memic.recognizedSentence.domain;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -13,7 +13,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @Getter
 @Setter
-public class Speech {
+public class RecognizedSentence {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -22,7 +22,7 @@ public class Speech {
     @Column(length = 1000)
     private String recognizedSentence;
 
-    public Speech(String recognizedSentence) {
+    public RecognizedSentence(String recognizedSentence) {
         this.recognizedSentence = recognizedSentence;
     }
 }

@@ -1,6 +1,6 @@
 package com.example.memic.transcription.infrastructure;
 
-import com.example.memic.speech.domain.Speech;
+import com.example.memic.recognizedSentence.domain.RecognizedSentence;
 import com.example.memic.transcription.domain.Transcription;
 import com.example.memic.transcription.exception.ImageToByteException;
 import java.io.IOException;
@@ -41,13 +41,13 @@ public class WhisperApiClient {
                 .build();
     }
 
-    public Speech transcribeSpeech(MultipartFile file) {
+    public RecognizedSentence transcribeSpeech(MultipartFile file) {
         HttpEntity<MultiValueMap<String, Object>> requestEntity = createRequestSpeechEntity(file);
         ResponseEntity<String> response = restTemplate.postForEntity("", requestEntity, String.class);
 
         String output = response.getBody().toString();
         String parsed = processSpeech(output);
-        return new Speech(parsed);
+        return new RecognizedSentence(parsed);
     }
 
     private HttpEntity<MultiValueMap<String, Object>> createRequestSpeechEntity(MultipartFile file) {

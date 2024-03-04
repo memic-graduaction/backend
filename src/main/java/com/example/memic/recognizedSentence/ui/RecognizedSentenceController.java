@@ -1,7 +1,7 @@
-package com.example.memic.speech.ui;
+package com.example.memic.recognizedSentence.ui;
 
-import com.example.memic.speech.application.SpeechService;
-import com.example.memic.speech.dto.SpeechResponse;
+import com.example.memic.recognizedSentence.application.RecognizedSentenceService;
+import com.example.memic.recognizedSentence.dto.RecognizedSentenceResponse;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -12,20 +12,20 @@ import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 @RequestMapping("/v1")
-public class SpeechController {
+public class RecognizedSentenceController {
 
-    private final SpeechService speechService;
+    private final RecognizedSentenceService recognizedSentenceService;
 
-    public SpeechController(SpeechService speechService) {
-        this.speechService = speechService;
+    public RecognizedSentenceController(RecognizedSentenceService recognizedSentenceService) {
+        this.recognizedSentenceService = recognizedSentenceService;
     }
 
     @PostMapping("/recognized-sectences/{sentenceId}")
-    public ResponseEntity<SpeechResponse> extractSpeech(
+    public ResponseEntity<RecognizedSentenceResponse> extractSpeech(
             @RequestPart MultipartFile speech,
             @PathVariable Long sentenceId
     ) {
-        SpeechResponse response = speechService.transcribe(speech, sentenceId);
+        RecognizedSentenceResponse response = recognizedSentenceService.transcribe(speech, sentenceId);
         return ResponseEntity.ok(response);
     }
 }
