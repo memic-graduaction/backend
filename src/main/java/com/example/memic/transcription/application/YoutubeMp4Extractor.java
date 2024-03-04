@@ -42,7 +42,6 @@ public class YoutubeMp4Extractor {
             printProgressResult(process);
             return filePath;
         } catch (IOException e) {
-            System.out.println(e.getMessage());
             throw new Mp4ExtractException("오디오를 추출하는 과정에서 에러가 발생했습니다.");
         }
     }
