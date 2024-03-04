@@ -1,6 +1,7 @@
 package com.example.memic.recognizedSentence.application;
 
 import com.example.memic.recognizedSentence.domain.RecognizedSentence;
+import com.example.memic.recognizedSentence.dto.RecognizedSentenceRequest;
 import com.example.memic.recognizedSentence.dto.RecognizedSentenceResponse;
 import com.example.memic.recognizedSentence.repository.RecognizedSentenceRepository;
 import com.example.memic.transcription.domain.Sentence;
@@ -30,8 +31,8 @@ public class RecognizedSentenceService {
     }
 
     @Transactional
-    public RecognizedSentenceResponse transcribe(MultipartFile speechFile, Long sentenceId) {
-        Sentence sentence = sentenceRepository.findById(sentenceId);
+    public RecognizedSentenceResponse transcribe(MultipartFile speechFile, RecognizedSentenceRequest request) {
+        Sentence sentence = sentenceRepository.getById(request.SentenceId());
 
         RecognizedSentence recognizedSentence = whisperApiClient.transcribeSpeech(speechFile);
         RecognizedSentence savedRecognizedSentence = recognizedSentenceRepository.save(recognizedSentence);

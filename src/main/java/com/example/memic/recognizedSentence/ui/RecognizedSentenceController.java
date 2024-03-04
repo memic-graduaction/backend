@@ -1,9 +1,9 @@
 package com.example.memic.recognizedSentence.ui;
 
 import com.example.memic.recognizedSentence.application.RecognizedSentenceService;
+import com.example.memic.recognizedSentence.dto.RecognizedSentenceRequest;
 import com.example.memic.recognizedSentence.dto.RecognizedSentenceResponse;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestPart;
@@ -23,9 +23,9 @@ public class RecognizedSentenceController {
     @PostMapping("/recognized-sectences/{sentenceId}")
     public ResponseEntity<RecognizedSentenceResponse> extractSpeech(
             @RequestPart MultipartFile speech,
-            @PathVariable Long sentenceId
+            @RequestPart RecognizedSentenceRequest request
     ) {
-        RecognizedSentenceResponse response = recognizedSentenceService.transcribe(speech, sentenceId);
+        RecognizedSentenceResponse response = recognizedSentenceService.transcribe(speech, request);
         return ResponseEntity.ok(response);
     }
 }
