@@ -46,8 +46,8 @@ public class WhisperApiClient {
         ResponseEntity<String> response = restTemplate.postForEntity("", requestEntity, String.class);
 
         String output = response.getBody().toString();
-        String parsed = processSpeech(output);
-        return new RecognizedSentence(parsed);
+        String speechTranscription = processSpeechTranscription(output);
+        return new RecognizedSentence(speechTranscription);
     }
 
     private HttpEntity<MultiValueMap<String, Object>> createRequestSpeechEntity(MultipartFile file) {
@@ -78,7 +78,7 @@ public class WhisperApiClient {
         return new HttpEntity<>(body, headers);
     }
 
-    private String processSpeech(String transcription) {
+    private String processSpeechTranscription(String transcription) {
         int transcriptionLength = transcription.length();
         String parsed = transcription.substring(13, transcriptionLength - 3);
         System.out.println(parsed);
