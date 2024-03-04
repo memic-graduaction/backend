@@ -1,5 +1,6 @@
 package com.example.memic.recognizedSentence.domain;
 
+import com.example.memic.recognizedSentence.exception.InvalidRecognizedException;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -23,6 +24,13 @@ public class RecognizedSentence {
     private String recognizedSentence;
 
     public RecognizedSentence(String recognizedSentence) {
+        validate(recognizedSentence);
         this.recognizedSentence = recognizedSentence;
+    }
+
+    private void validate(String content) {
+        if (content == null || content.isBlank()) {
+            throw new InvalidRecognizedException("인식된 스크립트가 없습니다.");
+        }
     }
 }
