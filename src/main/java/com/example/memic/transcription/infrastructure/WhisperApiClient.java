@@ -29,6 +29,9 @@ import org.springframework.web.util.DefaultUriBuilderFactory;
 @Component
 public class WhisperApiClient {
 
+    private static final int START_PREFIX = 13;
+    private static final int LAST_SUFFIX = 3;
+
     private final RestTemplate restTemplate;
 
     public WhisperApiClient(
@@ -39,51 +42,6 @@ public class WhisperApiClient {
                 .uriTemplateHandler(new DefaultUriBuilderFactory(openApiUrl))
                 .defaultHeader(HttpHeaders.AUTHORIZATION, "Bearer " + apiKey)
                 .build();
-    }
-
-    public RecognizedSentence transcribeSpeech(MultipartFile file) {
-        HttpEntity<MultiValueMap<String, Object>> requestEntity = createRequestSpeechEntity(file);
-        ResponseEntity<String> response = restTemplate.postForEntity("", requestEntity, String.class);
-
-        String output = response.getBody().toString();
-        String speechTranscription = processSpeechTranscription(output);
-        return new RecognizedSentence(speechTranscription);
-    }
-
-    private HttpEntity<MultiValueMap<String, Object>> createRequestSpeechEntity(MultipartFile file) {
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.MULTIPART_FORM_DATA);
-        MultiValueMap<String, Object> body = new LinkedMultiValueMap<>();
-
-        try {
-            Resource fileResource = new InputStreamResource(file.getInputStream()) {
-                @Override
-                public String getFilename() {
-                    return file.getOriginalFilename();
-                }
-
-                @Override
-                public long contentLength() {
-                    return file.getSize(); 
-                }
-            };
-
-            body.add("file", fileResource);
-            body.add("model", "whisper-1");
-            body.add("response_format", "json");
-        } catch (IOException e) {
-            throw new ImageToByteException(e);
-        }
-
-        return new HttpEntity<>(body, headers);
-    }
-
-    private String processSpeechTranscription(String transcription) {
-        int transcriptionLength = transcription.length();
-        String parsed = transcription.substring(13, transcriptionLength - 3);
-        System.out.println(parsed);
-
-        return parsed;
     }
 
     public Transcription transcribe(String url, String filePath) {
@@ -145,5 +103,49 @@ public class WhisperApiClient {
             }
         }
         return logMap;
+    }
+
+    public RecognizedSentence transcribeSpeech(MultipartFile file) {
+        HttpEntity<MultiValueMap<String, Object>> requestEntity = createRequestSpeechEntity(file);
+        ResponseEntity<String> response = restTemplate.postForEntity("", requestEntity, String.class);
+
+        String output = response.getBody().toString();
+        String speechTranscription = processSpeechTranscription(output);
+        return new RecognizedSentence(speechTranscription);
+    }
+
+    private HttpEntity<MultiValueMap<String, Object>> createRequestSpeechEntity(MultipartFile file) {
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.MULTIPART_FORM_DATA);
+        MultiValueMap<String, Object> body = new LinkedMultiValueMap<>();
+
+        try {
+            Resource fileResource = new InputStreamResource(file.getInputStream()) {
+                @Override
+                public String getFilename() {
+                    return file.getOriginalFilename();
+                }
+
+                @Override
+                public long contentLength() {
+                    return file.getSize();
+                }
+            };
+
+            body.add("file", fileResource);
+            body.add("model", "whisper-1");
+            body.add("response_format", "json");
+        } catch (IOException e) {
+            throw new ImageToByteException(e);
+        }
+
+        return new HttpEntity<>(body, headers);
+    }
+
+    private String processSpeechTranscription(String transcription) {
+        int transcriptionLength = transcription.length();
+        String parsed = transcription.substring(START_PREFIX, transcriptionLength - LAST_SUFFIX);
+
+        return parsed;
     }
 }
