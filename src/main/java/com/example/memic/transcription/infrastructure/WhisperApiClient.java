@@ -2,8 +2,6 @@ package com.example.memic.transcription.infrastructure;
 
 import com.example.memic.recognizedSentence.domain.RecognizedSentence;
 import com.example.memic.transcription.domain.Transcription;
-import com.example.memic.transcription.exception.ImageToByteException;
-import java.io.IOException;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -13,8 +11,6 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.core.io.FileSystemResource;
-import org.springframework.core.io.InputStreamResource;
-import org.springframework.core.io.Resource;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
@@ -114,29 +110,10 @@ public class WhisperApiClient {
     }
 
     private HttpEntity<MultiValueMap<String, Object>> createRequestSpeechEntity(MultipartFile file) {
-//        HttpHeaders headers = new HttpHeaders();
-//        headers.setContentType(MediaType.MULTIPART_FORM_DATA);
         MultiValueMap<String, Object> body = new LinkedMultiValueMap<>();
-
-        try {
-            Resource fileResource = new InputStreamResource(file.getInputStream()) {
-                @Override
-                public String getFilename() {
-                    return file.getOriginalFilename();
-                }
-
-                @Override
-                public long contentLength() {
-                    return file.getSize();
-                }
-            };
-
-            body.add("file", fileResource);
+            body.add("file", file.getResource());
             body.add("model", "whisper-1");
             body.add("response_format", "json");
-        } catch (IOException e) {
-            throw new ImageToByteException(e);
-        }
 
         return new HttpEntity<>(body);
     }
