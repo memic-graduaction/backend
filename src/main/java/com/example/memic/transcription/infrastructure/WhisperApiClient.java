@@ -17,7 +17,6 @@ import org.springframework.core.io.InputStreamResource;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.util.LinkedMultiValueMap;
@@ -115,8 +114,8 @@ public class WhisperApiClient {
     }
 
     private HttpEntity<MultiValueMap<String, Object>> createRequestSpeechEntity(MultipartFile file) {
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.MULTIPART_FORM_DATA);
+//        HttpHeaders headers = new HttpHeaders();
+//        headers.setContentType(MediaType.MULTIPART_FORM_DATA);
         MultiValueMap<String, Object> body = new LinkedMultiValueMap<>();
 
         try {
@@ -139,7 +138,7 @@ public class WhisperApiClient {
             throw new ImageToByteException(e);
         }
 
-        return new HttpEntity<>(body, headers);
+        return new HttpEntity<>(body);
     }
 
     private String processSpeechTranscription(String transcription) {

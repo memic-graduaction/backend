@@ -20,8 +20,8 @@ public class RecognizedSentenceController {
         this.recognizedSentenceService = recognizedSentenceService;
     }
 
-    @PostMapping("/recognized-sectences/{sentenceId}")
-    public ResponseEntity<RecognizedSentenceResponse> extractSpeech(
+    @PostMapping("/recognized-sentences")
+    public ResponseEntity<RecognizedSentenceResponse> extractRecognizedSentence(
             @RequestPart MultipartFile speech,
             @RequestPart RecognizedSentenceRequest request
     ) {

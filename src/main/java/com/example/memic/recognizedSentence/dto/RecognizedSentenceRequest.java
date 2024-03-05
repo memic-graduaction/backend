@@ -1,6 +1,6 @@
 package com.example.memic.recognizedSentence.dto;
 
 public record RecognizedSentenceRequest(
-        Long SentenceId
+        Long sentenceId
 ) {
 }
