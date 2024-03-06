@@ -2,7 +2,7 @@ package com.example.memic.transcription.ui;
 
 import com.example.memic.transcription.dto.TranscriptionCreateRequest;
 import com.example.memic.transcription.dto.TranscriptionResponse;
-import com.example.memic.transcription.service.TranscriptionService;
+import com.example.memic.transcription.application.TranscriptionService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;

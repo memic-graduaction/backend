@@ -1,5 +1,6 @@
 package com.example.memic.transcription.infrastructure;
 
+import com.example.memic.recognizedSentence.domain.RecognizedSentence;
 import com.example.memic.transcription.domain.Transcription;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
@@ -17,10 +18,14 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.util.DefaultUriBuilderFactory;
 
 @Component
 public class WhisperApiClient {
+
+    private static final int START_PREFIX = 13;
+    private static final int LAST_SUFFIX = 3;
 
     private final RestTemplate restTemplate;
 
@@ -45,14 +50,13 @@ public class WhisperApiClient {
         return new Transcription(url, sentences);
     }
 
-
     private HttpEntity<MultiValueMap<String, Object>> creatRequestEntity(String filePath) {
         MultiValueMap<String, Object> body = new LinkedMultiValueMap<>();
         body.add("file", new FileSystemResource(filePath));
         body.add("model", "whisper-1");
         body.add("response_format", "srt");
 
-      return new HttpEntity<>(body);
+        return new HttpEntity<>(body);
     }
 
     public String processTranscription(String transcription) {
@@ -78,7 +82,6 @@ public class WhisperApiClient {
         return time.replaceAll(",\\d+$", "");
     }
 
-
     public Map<LocalTime, String> parseLogText(String text) {
         Map<LocalTime, String> logMap = new HashMap<>();
         String[] lines = text.split("\n");
@@ -95,5 +98,30 @@ public class WhisperApiClient {
             }
         }
         return logMap;
+    }
+
+    public RecognizedSentence transcribeSpeech(MultipartFile file) {
+        HttpEntity<MultiValueMap<String, Object>> requestEntity = createRequestSpeechEntity(file);
+        ResponseEntity<String> response = restTemplate.postForEntity("", requestEntity, String.class);
+
+        String output = response.getBody().toString();
+        String speechTranscription = processSpeechTranscription(output);
+        return new RecognizedSentence(speechTranscription);
+    }
+
+    private HttpEntity<MultiValueMap<String, Object>> createRequestSpeechEntity(MultipartFile file) {
+        MultiValueMap<String, Object> body = new LinkedMultiValueMap<>();
+            body.add("file", file.getResource());
+            body.add("model", "whisper-1");
+            body.add("response_format", "json");
+
+        return new HttpEntity<>(body);
+    }
+
+    private String processSpeechTranscription(String transcription) {
+        int transcriptionLength = transcription.length();
+        String parsed = transcription.substring(START_PREFIX, transcriptionLength - LAST_SUFFIX);
+
+        return parsed;
     }
 }
