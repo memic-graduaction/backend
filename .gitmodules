@@ -1,0 +1,3 @@
+[submodule "src/main/resources/memic-private"]
+	path = src/main/resources/memic-private
+	url = git@github.com:memic-graduation/memic-private.git
