@@ -32,7 +32,7 @@ public class RecognizedSentenceService {
 
     @Transactional
     public RecognizedSentenceResponse transcribe(MultipartFile speechFile, RecognizedSentenceRequest request) {
-        Sentence sentence = sentenceRepository.getById(request.sentenceId());
+        Sentence sentence = sentenceRepository.getById(request.id());
 
         RecognizedSentence recognizedSentence = whisperApiClient.transcribeSpeech(speechFile);
         RecognizedSentence savedRecognizedSentence = recognizedSentenceRepository.save(recognizedSentence);

@@ -23,9 +23,9 @@ public class RecognizedSentenceController {
     @PostMapping("/recognized-sentences")
     public ResponseEntity<RecognizedSentenceResponse> extractRecognizedSentence(
             @RequestPart MultipartFile speech,
-            @RequestPart RecognizedSentenceRequest request
+            @RequestPart RecognizedSentenceRequest sentence
     ) {
-        RecognizedSentenceResponse response = recognizedSentenceService.transcribe(speech, request);
+        RecognizedSentenceResponse response = recognizedSentenceService.transcribe(speech, sentence);
         return ResponseEntity.ok(response);
     }
 }
