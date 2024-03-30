@@ -29,15 +29,15 @@ public class Transcription {
 
   @OneToMany(cascade = CascadeType.PERSIST)
   @JoinColumn(name = "transcription_id", updatable = false, nullable = false)
-  private List<Sentence> sentences;
+  private List<TranscriptionSentence> transcriptionSentences;
 
   public Transcription(String url, Map<LocalTime, String> sentences) {
     validate(url);
     this.url = url;
-    this.sentences = sentences.entrySet().stream()
-                              .map(entry -> new Sentence(entry.getKey(), entry.getValue()))
-                              .sorted()
-                              .toList();
+    this.transcriptionSentences = sentences.entrySet().stream()
+                                           .map(entry -> new TranscriptionSentence(entry.getKey(), entry.getValue()))
+                                           .sorted()
+                                           .toList();
   }
 
   private void validate(String url) {
