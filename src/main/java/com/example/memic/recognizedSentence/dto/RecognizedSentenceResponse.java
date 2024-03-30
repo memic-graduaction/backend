@@ -1,20 +1,21 @@
 package com.example.memic.recognizedSentence.dto;
 
 import com.example.memic.recognizedSentence.domain.RecognizedSentence;
-import com.example.memic.transcription.domain.Sentence;
+import com.example.memic.transcription.domain.TranscriptionSentence;
+import java.util.List;
 
 public record RecognizedSentenceResponse(
         Long id,
         Long SentenceId,
         String sentence,
-        String recognizedSentence
+        List<RecognizedWordResponse> recognizedWords
 ) {
-    public static RecognizedSentenceResponse of(RecognizedSentence recognizedSentence, Sentence sentence) {
+    public static RecognizedSentenceResponse of(RecognizedSentence recognizedSentence, TranscriptionSentence transcriptionSentence) {
         return new RecognizedSentenceResponse(
                 recognizedSentence.getId(),
-                sentence.getId(),
-                sentence.getContent(),
-                recognizedSentence.getRecognizedSentence()
+                transcriptionSentence.getId(),
+                transcriptionSentence.getContent(),
+                RecognizedWordResponse.from(recognizedSentence)
         );
     }
 }

@@ -6,6 +6,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import java.time.LocalTime;
+import java.util.List;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -14,7 +15,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @Getter
 @Setter
-public class Sentence implements Comparable<Sentence> {
+public class TranscriptionSentence implements Comparable<TranscriptionSentence> {
 
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
@@ -24,7 +25,7 @@ public class Sentence implements Comparable<Sentence> {
 
     private String content;
 
-    public Sentence(LocalTime startPoint, String content) {
+    public TranscriptionSentence(LocalTime startPoint, String content) {
         validate(content);
         this.startPoint = startPoint;
         this.content = content;
@@ -36,8 +37,12 @@ public class Sentence implements Comparable<Sentence> {
         }
     }
 
+    public List<String> getWords() {
+        return List.of(content.split(" "));
+    }
+
     @Override
-    public int compareTo(Sentence o) {
+    public int compareTo(TranscriptionSentence o) {
         return this.startPoint.compareTo(o.startPoint);
     }
 }

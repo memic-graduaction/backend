@@ -13,9 +13,10 @@ public record TranscriptionResponse(
         return new TranscriptionResponse(
                 transcription.getId(),
                 transcription.getUrl(),
-                transcription.getSentences().stream()
-                        .map(SentenceResponse::fromEntity)
-                        .toList()
+                transcription.getTranscriptionSentences()
+                             .stream()
+                             .map(SentenceResponse::fromEntity)
+                             .toList()
         );
     }
 }

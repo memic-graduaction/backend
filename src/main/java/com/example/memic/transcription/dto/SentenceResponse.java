@@ -1,6 +1,6 @@
 package com.example.memic.transcription.dto;
 
-import com.example.memic.transcription.domain.Sentence;
+import com.example.memic.transcription.domain.TranscriptionSentence;
 import java.time.LocalTime;
 
 public record SentenceResponse(
@@ -9,11 +9,11 @@ public record SentenceResponse(
         String sentence
 ) {
 
-    public static SentenceResponse fromEntity(Sentence sentence) {
+    public static SentenceResponse fromEntity(TranscriptionSentence transcriptionSentence) {
         return new SentenceResponse(
-                sentence.getId(),
-                sentence.getStartPoint(),
-                sentence.getContent()
+                transcriptionSentence.getId(),
+                transcriptionSentence.getStartPoint(),
+                transcriptionSentence.getContent()
         );
     }
 }

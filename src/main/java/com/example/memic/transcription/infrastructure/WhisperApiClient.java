@@ -1,6 +1,5 @@
 package com.example.memic.transcription.infrastructure;
 
-import com.example.memic.recognizedSentence.domain.RecognizedSentence;
 import com.example.memic.transcription.domain.Transcription;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
@@ -100,13 +99,12 @@ public class WhisperApiClient {
         return logMap;
     }
 
-    public RecognizedSentence transcribeSpeech(MultipartFile file) {
+    public String transcribeSpeech(MultipartFile file) {
         HttpEntity<MultiValueMap<String, Object>> requestEntity = createRequestSpeechEntity(file);
         ResponseEntity<String> response = restTemplate.postForEntity("", requestEntity, String.class);
 
         String output = response.getBody().toString();
-        String speechTranscription = processSpeechTranscription(output);
-        return new RecognizedSentence(speechTranscription);
+        return processSpeechTranscription(output);
     }
 
     private HttpEntity<MultiValueMap<String, Object>> createRequestSpeechEntity(MultipartFile file) {
@@ -120,8 +118,7 @@ public class WhisperApiClient {
 
     private String processSpeechTranscription(String transcription) {
         int transcriptionLength = transcription.length();
-        String parsed = transcription.substring(START_PREFIX, transcriptionLength - LAST_SUFFIX);
 
-        return parsed;
+        return transcription.substring(START_PREFIX, transcriptionLength - LAST_SUFFIX);
     }
 }

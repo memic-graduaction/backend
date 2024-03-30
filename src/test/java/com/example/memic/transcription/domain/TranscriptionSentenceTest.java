@@ -9,7 +9,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.NullAndEmptySource;
 
 @SuppressWarnings("NonAsciiCharacters")
-class SentenceTest {
+class TranscriptionSentenceTest {
 
     @ParameterizedTest
     @NullAndEmptySource
@@ -18,7 +18,7 @@ class SentenceTest {
         LocalTime time = LocalTime.of(0, 0, 1);
 
         //when
-        ThrowingCallable throwingCallable = () -> new Sentence(time, content);
+        ThrowingCallable throwingCallable = () -> new TranscriptionSentence(time, content);
 
         //then
         assertThatThrownBy(throwingCallable).isExactlyInstanceOf(InvalidTranscriptionException.class);
