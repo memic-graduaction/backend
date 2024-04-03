@@ -19,7 +19,6 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.MvcResult;
 
 @SuppressWarnings("NonAsciiCharacters")
 @AutoConfigureMockMvc
@@ -35,9 +34,9 @@ class TranscriptionIntegrationTest {
     @Disabled("yt-dlp가 설치되어 있어야 합니다.")
     @Test
     void 유튜브_url을_입력하면_자막을_추출한다() throws Exception {
-        TranscriptionCreateRequest request = new TranscriptionCreateRequest("https://youtu.be/lpcpsCY4Mco?si=_rxzxxH-fuE78HDf");
+        final var request = new TranscriptionCreateRequest("https://youtu.be/lpcpsCY4Mco?si=_rxzxxH-fuE78HDf");
 
-        MvcResult responseFromPost = mockMvc.perform(post("/v1/transcriptions")
+        final var responseFromPost = mockMvc.perform(post("/v1/transcriptions")
                         .content(objectMapper.writeValueAsString(request))
                         .contentType(MediaType.APPLICATION_JSON))
                 .andDo(print())
@@ -47,12 +46,12 @@ class TranscriptionIntegrationTest {
                 .andExpect(jsonPath("$.sentences").isNotEmpty())
                 .andReturn();
 
-        TranscriptionResponse transcriptionResponseFromPost = objectMapper.readValue(
+        final var transcriptionResponseFromPost = objectMapper.readValue(
                 responseFromPost.getResponse().getContentAsString(),
                 TranscriptionResponse.class
         );
 
-        MvcResult responseFromGet = mockMvc.perform(get("/v1/transcriptions/{id}", transcriptionResponseFromPost.id()))
+        final var responseFromGet = mockMvc.perform(get("/v1/transcriptions/{id}", transcriptionResponseFromPost.id()))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id").isNumber())
@@ -60,12 +59,10 @@ class TranscriptionIntegrationTest {
                 .andExpect(jsonPath("$.sentences").isNotEmpty())
                 .andReturn();
 
-        TranscriptionResponse transcriptionResponseFromGet = objectMapper.readValue(
+        final var transcriptionResponseFromGet = objectMapper.readValue(
                 responseFromGet.getResponse().getContentAsString(),
                 TranscriptionResponse.class
         );
-
-        transcriptionResponseFromGet.sentences().forEach(e -> System.out.println(e.startPoint()));
 
         assertThat(transcriptionResponseFromPost).isEqualTo(transcriptionResponseFromGet);
         assertThat(transcriptionResponseFromPost.sentences()).isSortedAccordingTo(Comparator.comparing(SentenceResponse::startPoint));
