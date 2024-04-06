@@ -16,7 +16,7 @@ class YoutubeMp4ExtractServiceTest {
         final var service = new YoutubeMp4Extractor("/Users/jung-yunho/youtube-mp3/", "yt-dlp");
 
         //when
-        String output = service.extractVideo("https://youtu.be/lpcpsCY4Mco?si=_rxzxxH-fuE78HDf");
+        final var output = service.extractVideo("https://youtu.be/lpcpsCY4Mco?si=_rxzxxH-fuE78HDf");
 
         //then
         assertThat(output).contains("100%");
