@@ -25,6 +25,6 @@ public class ApiExceptionHandler {
     @ExceptionHandler
     public ResponseEntity<String> handleException(Exception e, HttpServletRequest request) {
         return ResponseEntity.internalServerError()
-                             .body(e.getMessage());
+                             .body("서버 내부 에러");
     }
 }
