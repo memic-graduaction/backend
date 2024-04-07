@@ -1,6 +1,10 @@
 package com.example.memic.common.exception;
 
 import jakarta.servlet.http.HttpServletRequest;
+import java.util.Arrays;
+import java.util.stream.Collectors;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -10,9 +14,26 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 @RestControllerAdvice
 public class ApiExceptionHandler {
 
+    private final Logger logger = LoggerFactory.getLogger(ApiExceptionHandler.class);
+
     @ExceptionHandler
     public ResponseEntity<String> handleHttpException(HttpException e, HttpServletRequest request) {
-       return ResponseEntity.status(e.getStatus())
+        final String stackTrace = Arrays.stream(e.getStackTrace())
+                                        .sequential()
+                                        .map(StackTraceElement::toString)
+                                        .collect(Collectors.joining("\n"));
+        String formattedLog = String.format(
+                        """
+                        status: %s
+                        message: %s
+                        stackTrace: %s
+                        """,
+                e.getStatus(),
+                e.getMessage(),
+                stackTrace
+        );
+        logger.error(formattedLog);
+        return ResponseEntity.status(e.getStatus())
                              .body(e.getMessage());
     }
 
