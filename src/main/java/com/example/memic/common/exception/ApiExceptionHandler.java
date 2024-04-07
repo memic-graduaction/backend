@@ -18,34 +18,40 @@ public class ApiExceptionHandler {
 
     @ExceptionHandler
     public ResponseEntity<String> handleHttpException(HttpException e, HttpServletRequest request) {
-        final String stackTrace = Arrays.stream(e.getStackTrace())
-                                        .sequential()
-                                        .map(StackTraceElement::toString)
-                                        .collect(Collectors.joining("\n"));
-        String formattedLog = String.format(
-                        """
-                        status: %s
-                        message: %s
-                        stackTrace: %s
-                        """,
-                e.getStatus(),
-                e.getMessage(),
-                stackTrace
-        );
-        logger.error(formattedLog);
+        doLogging(e, request);
         return ResponseEntity.status(e.getStatus())
                              .body(e.getMessage());
     }
 
     @ExceptionHandler
     public ResponseEntity<String> handleMethodArgumentNotValid(MethodArgumentNotValidException e, HttpServletRequest request) {
+        doLogging(e, request);
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                              .body(e.getMessage());
     }
 
     @ExceptionHandler
     public ResponseEntity<String> handleException(Exception e, HttpServletRequest request) {
+        doLogging(e, request);
         return ResponseEntity.internalServerError()
                              .body("서버 내부 에러");
+    }
+
+    private void doLogging(final Exception e, HttpServletRequest request) {
+        final String stackTrace = Arrays.stream(e.getStackTrace())
+                                        .sequential()
+                                        .map(StackTraceElement::toString)
+                                        .collect(Collectors.joining("\n"));
+        String formattedLog = String.format(
+                """
+                requestURI: %s
+                message: %s
+                stackTrace: %s
+                """,
+                request.getRequestURI(),
+                e.getMessage(),
+                stackTrace
+        );
+        logger.error(formattedLog);
     }
 }
