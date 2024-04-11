@@ -41,6 +41,10 @@ public class TranscriptionSentence implements Comparable<TranscriptionSentence> 
         return List.of(content.split(" "));
     }
 
+    public int getWordCount() {
+        return getWords().size();
+    }
+
     @Override
     public int compareTo(TranscriptionSentence o) {
         return this.startPoint.compareTo(o.startPoint);
