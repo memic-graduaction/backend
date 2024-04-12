@@ -54,7 +54,7 @@ public class WhisperApiClient {
         body.add("file", new FileSystemResource(filePath));
         body.add("model", "whisper-1");
         body.add("response_format", "srt");
-
+        body.add("language", "en");
         return new HttpEntity<>(body);
     }
 
@@ -109,10 +109,10 @@ public class WhisperApiClient {
 
     private HttpEntity<MultiValueMap<String, Object>> createRequestSpeechEntity(MultipartFile file) {
         MultiValueMap<String, Object> body = new LinkedMultiValueMap<>();
-            body.add("file", file.getResource());
-            body.add("model", "whisper-1");
-            body.add("response_format", "json");
-
+        body.add("file", file.getResource());
+        body.add("model", "whisper-1");
+        body.add("response_format", "json");
+        body.add("language", "en");
         return new HttpEntity<>(body);
     }
 
