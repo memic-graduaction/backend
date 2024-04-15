@@ -1,5 +1,6 @@
 package com.example.memic.common.auth;
 
+import com.example.memic.common.exception.InvalidTokenException;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtParser;
 import io.jsonwebtoken.Jwts;
@@ -36,7 +37,7 @@ public class JwtTokenProvider {
 
     public Long parseToken(String token) {
         if (!token.startsWith(SCHEME)) {
-            throw new InvalidTokenException("유효하지 않은 토큰 타입입니다. 입력된 token: ");
+            throw new InvalidTokenException("유효하지 않은 토큰 타입입니다. 입력된 token : " + token);
         }
         String credentials = token.substring(SCHEME.length());
         JwtParser parser = Jwts.parserBuilder()

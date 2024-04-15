@@ -23,8 +23,10 @@ public class AuthConfig implements WebMvcConfigurer {
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(authInterceptor)
                 .addPathPatterns("/**")
-                .excludePathPatterns("/v1/members/sign-up")
-                .excludePathPatterns("/v1/members/sign-in");
+                .excludePathPatterns("/v1/members/**")
+                .excludePathPatterns("/v1/transcriptions/**")
+                .excludePathPatterns("/v1/recognized-sentences")
+                .excludePathPatterns("/v1/translate");
     }
 
     @Override

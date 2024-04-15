@@ -1,6 +1,5 @@
-package com.example.memic.common.auth;
+package com.example.memic.common.exception;
 
-import com.example.memic.common.exception.HttpException;
 import org.springframework.http.HttpStatus;
 
 public class InvalidTokenException extends HttpException {
