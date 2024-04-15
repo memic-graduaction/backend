@@ -4,7 +4,9 @@ spring:
       - classpath:/memic-private/application.yml
   profiles:
     active: local
-
+jwt:
+  expiration: 3600
+  key: memicmemic11memicmemicmemicmemicmem!cmemicmemicmemic
 ---
 
 spring:
