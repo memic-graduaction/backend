@@ -23,7 +23,7 @@ public class SpeechController {
             @RequestPart MultipartFile speech,
             @RequestPart SpeechWordRequest word
     ) {
-        SpeechWordResponse responses = speechService.transcribe(speech, word);
-        return ResponseEntity.ok(responses);
+        SpeechWordResponse response = speechService.transcribe(speech, word);
+        return ResponseEntity.ok(response);
     }
 }
