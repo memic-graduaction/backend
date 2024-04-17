@@ -20,7 +20,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
-@Disabled("토근이 발생되어야 합니다")
+@Disabled("토큰이 발생되어야 합니다")
 @SuppressWarnings("nonAsciiCharacters")
 @AutoConfigureMockMvc
 @SpringBootTest
