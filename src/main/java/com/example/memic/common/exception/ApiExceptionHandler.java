@@ -1,5 +1,6 @@
 package com.example.memic.common.exception;
 
+import io.jsonwebtoken.ExpiredJwtException;
 import jakarta.servlet.http.HttpServletRequest;
 import java.util.Arrays;
 import java.util.stream.Collectors;
@@ -21,6 +22,13 @@ public class ApiExceptionHandler {
         doLogging(e, request);
         return ResponseEntity.status(e.getStatus())
                              .body(e.getMessage());
+    }
+
+    @ExceptionHandler
+    public ResponseEntity<String> handleExpiredJwt(ExpiredJwtException e, HttpServletRequest request) {
+        doLogging(e, request);
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                             .body("토큰이 만료되었습니다");
     }
 
     @ExceptionHandler

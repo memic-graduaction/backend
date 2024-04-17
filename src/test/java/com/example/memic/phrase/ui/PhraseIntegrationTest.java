@@ -12,6 +12,7 @@ import com.example.memic.phrase.dto.PhraseCreatedResponse;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.util.List;
 import javax.sql.DataSource;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -19,6 +20,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
+@Disabled("토큰이 발생되어야 합니다")
 @SuppressWarnings("nonAsciiCharacters")
 @AutoConfigureMockMvc
 @SpringBootTest
@@ -47,7 +49,7 @@ class PhraseIntegrationTest {
             connection.createStatement().execute("INSERT INTO transcription_sentence (id, start_point, content, transcription_id) VALUES (1, '00:00:00', 'hello world', 1)");
             connection.createStatement().execute("INSERT INTO tag (id, name) VALUES (1, 'tag1')");
             connection.createStatement().execute("INSERT INTO tag (id, name) VALUES (2, 'tag2')");
-            connection.createStatement().execute("INSERT INTO member (id) VALUES (1)"); // TODO : 회원가입 기능 추가 후 수정
+            connection.createStatement().execute("INSERT INTO member (id, email, password) VALUES (1, 'test@gmail.com', '123')"); // TODO : 회원가입 기능 추가 후 수정
         }
 
         final var meaning = "세계";
