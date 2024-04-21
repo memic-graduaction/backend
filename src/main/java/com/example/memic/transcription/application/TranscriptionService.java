@@ -4,6 +4,7 @@ import com.example.memic.transcription.domain.Transcription;
 import com.example.memic.transcription.domain.TranscriptionRepository;
 import com.example.memic.transcription.dto.TranscriptionCreateRequest;
 import com.example.memic.transcription.dto.TranscriptionResponse;
+import com.example.memic.transcription.infrastructure.Mp4Extractor;
 import com.example.memic.transcription.infrastructure.WhisperApiClient;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -11,12 +12,12 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 public class TranscriptionService {
 
-    private final YoutubeMp4Extractor extractor;
+    private final Mp4Extractor extractor;
     private final WhisperApiClient whisperApiClient;
     private final TranscriptionRepository transcriptionRepository;
 
     public TranscriptionService(
-            YoutubeMp4Extractor extractor,
+            Mp4Extractor extractor,
             WhisperApiClient whisperApiClient,
             TranscriptionRepository transcriptionRepository
     ) {
@@ -31,7 +32,7 @@ public class TranscriptionService {
 
         Transcription transcription = whisperApiClient.transcribe(request.url(), filePath);
         transcriptionRepository.save(transcription);
-        
+
         return TranscriptionResponse.fromEntity(transcription);
     }
 

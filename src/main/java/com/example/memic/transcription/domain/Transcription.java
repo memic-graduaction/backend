@@ -6,7 +6,6 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToMany;
 import java.time.LocalTime;
 import java.util.List;
@@ -21,28 +20,27 @@ import lombok.Setter;
 @Setter
 public class Transcription {
 
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @Id
-  private Long id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id
+    private Long id;
 
-  private String url;
+    private String url;
 
-  @OneToMany(cascade = CascadeType.PERSIST)
-  @JoinColumn(name = "transcription_id", updatable = false, nullable = false)
-  private List<TranscriptionSentence> transcriptionSentences;
+    @OneToMany(cascade = CascadeType.PERSIST, mappedBy = "transcription")
+    private List<TranscriptionSentence> transcriptionSentences;
 
-  public Transcription(String url, Map<LocalTime, String> sentences) {
-    validate(url);
-    this.url = url;
-    this.transcriptionSentences = sentences.entrySet().stream()
-                                           .map(entry -> new TranscriptionSentence(entry.getKey(), entry.getValue()))
-                                           .sorted()
-                                           .toList();
-  }
-
-  private void validate(String url) {
-    if (!url.startsWith("https://")) {
-      throw new InvalidTranscriptionException("https 형식의 오디오 주소가 아닙니다.");
+    public Transcription(String url, Map<LocalTime, String> sentences) {
+        validate(url);
+        this.url = url;
+        this.transcriptionSentences = sentences.entrySet().stream()
+                                               .map(entry -> new TranscriptionSentence(this, entry.getKey(), entry.getValue()))
+                                               .sorted()
+                                               .toList();
     }
-  }
+
+    private void validate(String url) {
+        if (!url.startsWith("https://")) {
+            throw new InvalidTranscriptionException("https 형식의 오디오 주소가 아닙니다.");
+        }
+    }
 }

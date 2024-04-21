@@ -1,4 +1,4 @@
-package com.example.memic.transcription.application;
+package com.example.memic.transcription.infrastructure;
 
 import com.example.memic.transcription.exception.Mp4ExtractException;
 import java.io.BufferedReader;
@@ -7,10 +7,12 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.UUID;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 
 @Component
-public class YoutubeMp4Extractor {
+@Profile("!local")
+public class YoutubeMp4Extractor implements Mp4Extractor {
 
     private final String outputFormat;
     private final String command;
@@ -23,9 +25,10 @@ public class YoutubeMp4Extractor {
         this.command = command;
     }
 
+    @Override
     public String extractVideo(String url) {
         String extension = "mp3";
-        String filePath = outputFormat + UUID.randomUUID().toString() + "." + extension;
+        String filePath = outputFormat + UUID.randomUUID() + "." + extension;
 
         String[] commandsAndArgs = {
                 command,
@@ -66,7 +69,7 @@ public class YoutubeMp4Extractor {
         System.out.println(lines.toString());
     }
 
-    public void extractStreams(InputStream inputStream, StringBuilder lines) throws IOException {
+    private void extractStreams(InputStream inputStream, StringBuilder lines) throws IOException {
         try (BufferedReader reader = new BufferedReader(
                 new InputStreamReader(inputStream))) {
             String line;
