@@ -36,7 +36,7 @@ public class PhraseService {
         final TranscriptionSentence sentence = transcriptionSentenceRepository.getById(request.sentenceId());
         final Phrase newPhrase = new Phrase(
                 request.meaning(),
-                new Member(1L), // TODO : 회원가입 기능 추가 후 수정
+                new Member("123@naver.com", "123"), // TODO : 회원가입 기능 추가 후 수정
                 sentence,
                 request.startIndex(),
                 request.endIndex()

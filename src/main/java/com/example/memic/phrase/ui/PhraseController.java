@@ -1,6 +1,6 @@
 package com.example.memic.phrase.ui;
 
-import com.example.memic.common.auth.Authorized;
+import com.example.memic.common.auth.Authorization;
 import com.example.memic.member.domain.Member;
 import com.example.memic.phrase.application.PhraseService;
 import com.example.memic.phrase.dto.PhraseCreateRequest;
@@ -24,7 +24,7 @@ public class PhraseController {
     @PostMapping
     public ResponseEntity<PhraseCreatedResponse> createPhrase(
             @RequestBody final PhraseCreateRequest request,
-            @Authorized final Member member
+            @Authorization final Member member
     ) {
         PhraseCreatedResponse response = phraseService.createPhrase(request, member);
         return ResponseEntity.ok(response);
