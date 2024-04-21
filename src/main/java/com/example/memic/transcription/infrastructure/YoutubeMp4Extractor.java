@@ -66,7 +66,7 @@ public class YoutubeMp4Extractor implements Mp4Extractor {
             lines.append(e.getMessage());
             throw new Mp4ExtractException("오디오를 추출하는 과정에서 에러가 발생했습니다.");
         }
-        System.out.println(lines.toString());
+        System.out.println(lines);
     }
 
     private void extractStreams(InputStream inputStream, StringBuilder lines) throws IOException {
