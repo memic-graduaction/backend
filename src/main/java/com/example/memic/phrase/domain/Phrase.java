@@ -79,4 +79,9 @@ public class Phrase {
         }
         tags.add(new PhraseTag(this, tag));
     }
+
+    public String getContent() {
+        final var elements = sentence.getWords().subList(startIndex, endIndex + 1);
+        return String.join(" ", elements);
+    }
 }
