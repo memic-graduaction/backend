@@ -43,7 +43,7 @@ public class Phrase {
     private Integer endIndex;
 
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "phrase", cascade = CascadeType.ALL)
-    private List<PhraseTag> tags = new ArrayList<>();
+    private final List<PhraseTag> tags = new ArrayList<>();
 
     public Phrase(
             final String meaning,
