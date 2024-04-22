@@ -10,4 +10,6 @@ public interface PhraseRepository extends Repository<Phrase, Long> {
     Phrase save(Phrase phrase);
 
     List<Phrase> findByMemberAndSentenceIdIn(Member member, List<Long> sentenceIds);
+
+    List<Phrase> findByMember(Member member);
 }
