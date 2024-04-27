@@ -81,7 +81,8 @@ public class Phrase {
     }
 
     public String getContent() {
-        final var elements = sentence.getWords().subList(startIndex, endIndex + 1);
+        final List<String> elements = sentence.getWords()
+                                              .subList(startIndex, endIndex + 1);
         return String.join(" ", elements);
     }
 }
