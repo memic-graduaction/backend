@@ -18,7 +18,7 @@ class TranscriptionSentenceTest {
         LocalTime time = LocalTime.of(0, 0, 1);
 
         //when
-        ThrowingCallable throwingCallable = () -> new TranscriptionSentence(time, content);
+        ThrowingCallable throwingCallable = () -> new TranscriptionSentence(null, time, content);
 
         //then
         assertThatThrownBy(throwingCallable).isExactlyInstanceOf(InvalidTranscriptionException.class);

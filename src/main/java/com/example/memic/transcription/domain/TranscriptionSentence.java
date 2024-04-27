@@ -31,10 +31,6 @@ public class TranscriptionSentence implements Comparable<TranscriptionSentence> 
 
     private String content;
 
-    public TranscriptionSentence(LocalTime startPoint, String content) {
-        this(null, startPoint, content);
-    }
-
     public TranscriptionSentence(Transcription transcription, LocalTime startPoint, String content) {
         validate(content);
         this.transcription = transcription;

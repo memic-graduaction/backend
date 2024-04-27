@@ -26,7 +26,7 @@ class PhraseTest {
         @Test
         void 끝_인덱스는_원본문장의_단어_개수_보다_작아야한다() {
             //given
-            final var sentence = new TranscriptionSentence(LocalTime.MIDNIGHT, "hello bojun");
+            final var sentence = sentenceWithoutTranscription("hello bojun");
             final var member = new Member();
 
             //when
@@ -39,7 +39,7 @@ class PhraseTest {
         @Test
         void 시작_인덱스는_0보다_커야한다() {
             //given
-            final var sentence = new TranscriptionSentence(LocalTime.MIDNIGHT, "hello bojun");
+            final var sentence = sentenceWithoutTranscription("hello bojun");
             final var member = new Member();
 
             //when
@@ -52,7 +52,7 @@ class PhraseTest {
         @Test
         void 시작_인덱스는_끝_인덱스보다_작아야한다() {
             //given
-            final var sentence = new TranscriptionSentence(LocalTime.MIDNIGHT, "hello bojun");
+            final var sentence = sentenceWithoutTranscription("hello bojun");
             final var member = new Member();
 
             //when
@@ -66,7 +66,7 @@ class PhraseTest {
         @CsvSource({"0, 0", "0, 1", "1, 1"})
         void 인덱스_조건에_맞으면_정상_생성한다(int startIndex, int endIndex) {
             //given
-            final var sentence = new TranscriptionSentence(LocalTime.MIDNIGHT, "hello bojun");
+            final var sentence = sentenceWithoutTranscription("hello bojun");
             final var member = new Member();
 
             //when
@@ -80,7 +80,7 @@ class PhraseTest {
     @Test
     void 이미_가진_태그를_등록하면_무시한다() {
         //given
-        final var sentence = new TranscriptionSentence(LocalTime.MIDNIGHT, "hello bojun");
+        final var sentence = sentenceWithoutTranscription("hello bojun");
         final var member = new Member();
         final var phrase = new Phrase("안녕 보준", member, sentence, 0, 1);
         final var tag = new Tag("인사");
@@ -91,5 +91,9 @@ class PhraseTest {
 
         //then
         assertThat(phrase.getTags()).hasSize(1);
+    }
+
+    private TranscriptionSentence sentenceWithoutTranscription(String content) {
+        return new TranscriptionSentence(null, LocalTime.MIDNIGHT, content);
     }
 }

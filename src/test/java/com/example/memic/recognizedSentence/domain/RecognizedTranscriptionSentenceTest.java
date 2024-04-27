@@ -14,7 +14,7 @@ class RecognizedTranscriptionSentenceTest {
     @Test
     void 원본_문장과_정확히_일치하면_Recognized_Word의_일치여부가_전부_True이다() {
         //given
-        final var originalSentence = new TranscriptionSentence(LocalTime.MIDNIGHT, "This is a test.");
+        final var originalSentence = sentenceWithoutTranscription("This is a test.");
         final var rawRecognizedSentence = "This is a test.";
 
         //when
@@ -31,7 +31,7 @@ class RecognizedTranscriptionSentenceTest {
     @Test
     void 원본_문장에_없는_단어는_일치여부가_False이다() {
         //given
-        final var originalSentence = new TranscriptionSentence(LocalTime.MIDNIGHT, "This is a test.");
+        final var originalSentence = sentenceWithoutTranscription("This is a test.");
         final var rawRecognizedSentence = "This is a test. Hello";
 
         //when
@@ -53,7 +53,7 @@ class RecognizedTranscriptionSentenceTest {
     @Test
     void 인덱스가_일치하지_않더라도_일정_범위_안에_단어가_존재하면_일치여부는_True이다() {
         //given
-        final var originalSentence = new TranscriptionSentence(LocalTime.MIDNIGHT, "This is a Hello test.");
+        final var originalSentence = sentenceWithoutTranscription("This is a Hello test.");
         final var rawRecognizedSentence = "This is a test. Hello";
 
         //when
@@ -70,7 +70,7 @@ class RecognizedTranscriptionSentenceTest {
     @Test
     void 원본_문장에_존재하더라도_일정_범위_이상_떨어져있다면_일치여부는_False이다() {
         //given
-        final var originalSentence = new TranscriptionSentence(LocalTime.MIDNIGHT, "This is a test.");
+        final var originalSentence = sentenceWithoutTranscription("This is a test.");
         final var rawRecognizedSentence = "This is a wrong range test.";
 
         //when
@@ -98,7 +98,7 @@ class RecognizedTranscriptionSentenceTest {
         final var startTime = System.currentTimeMillis();
         final var original = "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAB";
         final var target = "AAAAAAAAAAAAAAAAB";
-        final var originalSentence = new TranscriptionSentence(LocalTime.MIDNIGHT, original);
+        final var originalSentence = sentenceWithoutTranscription(original);
 
         //when
         final var recognizedSentence = new RecognizedSentence(target, originalSentence);
@@ -106,5 +106,9 @@ class RecognizedTranscriptionSentenceTest {
 
         //then
         System.out.println(("실행 시간 : " + (endTime - startTime) + "ms"));
+    }
+
+    private TranscriptionSentence sentenceWithoutTranscription(String content) {
+        return new TranscriptionSentence(null, LocalTime.MIDNIGHT, content);
     }
 }
