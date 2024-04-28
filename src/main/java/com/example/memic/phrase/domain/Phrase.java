@@ -43,7 +43,7 @@ public class Phrase {
     private Integer endIndex;
 
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "phrase", cascade = CascadeType.ALL)
-    private List<PhraseTag> tags = new ArrayList<>();
+    private final List<PhraseTag> tags = new ArrayList<>();
 
     public Phrase(
             final String meaning,
@@ -78,5 +78,11 @@ public class Phrase {
             return;
         }
         tags.add(new PhraseTag(this, tag));
+    }
+
+    public String getContent() {
+        final List<String> elements = sentence.getWords()
+                                              .subList(startIndex, endIndex + 1);
+        return String.join(" ", elements);
     }
 }

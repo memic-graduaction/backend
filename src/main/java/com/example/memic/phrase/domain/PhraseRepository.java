@@ -1,18 +1,15 @@
 package com.example.memic.phrase.domain;
 
 
-import jakarta.persistence.EntityNotFoundException;
-import java.util.Optional;
+import com.example.memic.member.domain.Member;
+import java.util.List;
 import org.springframework.data.repository.Repository;
 
 public interface PhraseRepository extends Repository<Phrase, Long> {
 
     Phrase save(Phrase phrase);
 
-    default Phrase getById(Long id) {
-        return findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("아이디에 해당하는 표현이 없습니다. id: " + id));
-    }
+    List<Phrase> findByMemberAndSentenceIdIn(Member member, List<Long> sentenceIds);
 
-    Optional<Phrase> findById(Long id);
+    List<Phrase> findByMember(Member member);
 }

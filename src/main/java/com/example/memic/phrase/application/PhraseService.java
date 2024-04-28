@@ -7,6 +7,8 @@ import com.example.memic.phrase.domain.Tag;
 import com.example.memic.phrase.domain.TagRepository;
 import com.example.memic.phrase.dto.PhraseCreateRequest;
 import com.example.memic.phrase.dto.PhraseCreatedResponse;
+import com.example.memic.phrase.dto.PhraseResponse;
+import com.example.memic.phrase.dto.TranscriptionPhraseResponse;
 import com.example.memic.transcription.domain.TranscriptionSentence;
 import com.example.memic.transcription.domain.TranscriptionSentenceRepository;
 import jakarta.persistence.EntityNotFoundException;
@@ -36,7 +38,7 @@ public class PhraseService {
         final TranscriptionSentence sentence = transcriptionSentenceRepository.getById(request.sentenceId());
         final Phrase newPhrase = new Phrase(
                 request.meaning(),
-                new Member("123@naver.com", "123"), // TODO : 회원가입 기능 추가 후 수정
+                member,
                 sentence,
                 request.startIndex(),
                 request.endIndex()
@@ -55,5 +57,19 @@ public class PhraseService {
             throw new EntityNotFoundException("태그 아이디에 해당하는 태그가 없습니다. 요청한 태그 아이디: " + requestTagIds);
         }
         return registeredTags;
+    }
+
+    public List<PhraseResponse> getPhrases(final Member member) {
+        final List<Phrase> phrases = phraseRepository.findByMember(member);
+        return PhraseResponse.from(phrases);
+    }
+
+    public List<TranscriptionPhraseResponse> getTranscriptionPhrases(final Long transcriptionId, final Member member) {
+        final List<IdWrapper> sentenceIdWrappers = transcriptionSentenceRepository.getIdsByTranscriptionId(transcriptionId);
+        final List<Long> sentenceIds = sentenceIdWrappers.stream()
+                                                         .map(IdWrapper::id)
+                                                         .toList();
+        final List<Phrase> phrases = phraseRepository.findByMemberAndSentenceIdIn(member, sentenceIds);
+        return TranscriptionPhraseResponse.from(phrases);
     }
 }

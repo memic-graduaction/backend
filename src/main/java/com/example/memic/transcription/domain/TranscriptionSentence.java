@@ -5,6 +5,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import java.time.LocalTime;
 import java.util.List;
 import lombok.Getter;
@@ -21,12 +23,17 @@ public class TranscriptionSentence implements Comparable<TranscriptionSentence> 
     @Id
     private Long id;
 
+    @ManyToOne
+    @JoinColumn(name = "transcription_id", updatable = false, nullable = false)
+    private Transcription transcription;
+
     private LocalTime startPoint;
 
     private String content;
 
-    public TranscriptionSentence(LocalTime startPoint, String content) {
+    public TranscriptionSentence(Transcription transcription, LocalTime startPoint, String content) {
         validate(content);
+        this.transcription = transcription;
         this.startPoint = startPoint;
         this.content = content;
     }
