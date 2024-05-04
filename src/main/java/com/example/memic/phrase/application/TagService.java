@@ -5,9 +5,9 @@ import com.example.memic.phrase.domain.TagRepository;
 import com.example.memic.phrase.dto.TagCreateRequest;
 import com.example.memic.phrase.dto.TagCreateResponse;
 import com.example.memic.phrase.dto.TagListResponse;
-import jakarta.persistence.EntityExistsException;
 import java.util.List;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class TagService {
@@ -18,16 +18,14 @@ public class TagService {
         this.tagRepository = tagRepository;
     }
 
+    @Transactional
     public TagCreateResponse createTag(final TagCreateRequest request) {
-        if(tagRepository.existsByName(request.name())){
-            throw new EntityExistsException("태그 이름이 이미 존재합니다.");
-        }
-
         final Tag newTag = new Tag(request.name());
         final Tag saved = tagRepository.save(newTag);
         return new TagCreateResponse(saved.getId());
     }
 
+    @Transactional(readOnly = true)
     public List<TagListResponse> getTags() {
         List<Tag> tags = tagRepository.findAll();
         return TagListResponse.from(tags);
