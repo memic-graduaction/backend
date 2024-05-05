@@ -7,6 +7,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.example.memic.common.EnableMockMvc;
+import com.example.memic.common.database.NoTransactionExtension;
 import com.example.memic.phrase.dto.TagCreateRequest;
 import com.example.memic.phrase.dto.TagCreateResponse;
 import com.example.memic.phrase.dto.TagListResponse;
@@ -15,6 +16,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import java.util.List;
 import org.assertj.core.api.SoftAssertions;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
@@ -32,6 +34,7 @@ class TagIntegrationTest {
     private MockMvc mockMvc;
 
     @Test
+    @ExtendWith(NoTransactionExtension.class)
     void 태그를_저장하고_목록을_가져온다() throws Exception{
         final var request = new TagCreateRequest("테스트");
 
