@@ -1,7 +1,9 @@
 package com.example.memic.common.exception;
 
+import com.example.memic.common.slack.InternalErrorSender;
 import io.jsonwebtoken.ExpiredJwtException;
 import jakarta.servlet.http.HttpServletRequest;
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.stream.Collectors;
 import org.slf4j.Logger;
@@ -11,11 +13,18 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.util.ContentCachingRequestWrapper;
 
 @RestControllerAdvice
 public class ApiExceptionHandler {
 
     private final Logger logger = LoggerFactory.getLogger(ApiExceptionHandler.class);
+
+    private final InternalErrorSender InternalErrorSender;
+
+    public ApiExceptionHandler(final InternalErrorSender InternalErrorSender) {
+        this.InternalErrorSender = InternalErrorSender;
+    }
 
     @ExceptionHandler
     public ResponseEntity<String> handleHttpException(HttpException e, HttpServletRequest request) {
@@ -39,7 +48,10 @@ public class ApiExceptionHandler {
     }
 
     @ExceptionHandler
-    public ResponseEntity<String> handleException(Exception e, HttpServletRequest request) {
+    public ResponseEntity<String> handleException(Exception e, HttpServletRequest request) throws IOException {
+        final ContentCachingRequestWrapper cachingRequest = (ContentCachingRequestWrapper) request;
+        InternalErrorSender.execute(cachingRequest, e);
+
         doLogging(e, request);
         return ResponseEntity.internalServerError()
                              .body("서버 내부 에러");

@@ -44,6 +44,9 @@ dependencies {
     // db
     runtimeOnly 'com.mysql:mysql-connector-j'
     runtimeOnly 'com.h2database:h2:1.4.200'
+
+    //slack
+    implementation 'com.slack.api:slack-api-client:1.27.2'
 }
 
 tasks.named('bootBuildImage') {
