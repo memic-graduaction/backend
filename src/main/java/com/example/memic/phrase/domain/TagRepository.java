@@ -1,5 +1,6 @@
 package com.example.memic.phrase.domain;
 
+import com.example.memic.member.domain.Member;
 import java.util.List;
 import org.springframework.data.repository.Repository;
 
@@ -9,7 +10,5 @@ public interface TagRepository extends Repository<Tag, Long> {
 
     Tag save(Tag tag);
 
-    boolean existsByName(String name);
-
-    List<Tag> findAll();
+    List<Tag> findAllByMember(Member member);
 }

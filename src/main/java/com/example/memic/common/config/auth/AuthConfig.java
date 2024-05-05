@@ -27,8 +27,7 @@ public class AuthConfig implements WebMvcConfigurer {
                 .excludePathPatterns("/v1/transcriptions/**")
                 .excludePathPatterns("/v1/recognized-sentences")
                 .excludePathPatterns("/v1/speeches/words")
-                .excludePathPatterns("/v1/translate")
-                .excludePathPatterns("/v1/tags");
+                .excludePathPatterns("/v1/translate");
     }
 
     @Override

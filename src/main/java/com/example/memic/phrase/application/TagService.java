@@ -1,5 +1,6 @@
 package com.example.memic.phrase.application;
 
+import com.example.memic.member.domain.Member;
 import com.example.memic.phrase.domain.Tag;
 import com.example.memic.phrase.domain.TagRepository;
 import com.example.memic.phrase.dto.TagCreateRequest;
@@ -19,15 +20,15 @@ public class TagService {
     }
 
     @Transactional
-    public TagCreateResponse createTag(final TagCreateRequest request) {
-        final Tag newTag = new Tag(request.name());
+    public TagCreateResponse createTag(final Member member, final TagCreateRequest request) {
+        final Tag newTag = new Tag(request.name(), member);
         final Tag saved = tagRepository.save(newTag);
         return new TagCreateResponse(saved.getId());
     }
 
     @Transactional(readOnly = true)
-    public List<TagListResponse> getTags() {
-        List<Tag> tags = tagRepository.findAll();
+    public List<TagListResponse> getTags(final Member member) {
+        List<Tag> tags = tagRepository.findAllByMember(member);
         return TagListResponse.from(tags);
     }
 }

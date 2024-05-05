@@ -1,5 +1,7 @@
 package com.example.memic.phrase.ui;
 
+import com.example.memic.common.auth.Authorization;
+import com.example.memic.member.domain.Member;
 import com.example.memic.phrase.application.TagService;
 import com.example.memic.phrase.dto.TagCreateRequest;
 import com.example.memic.phrase.dto.TagCreateResponse;
@@ -23,14 +25,17 @@ public class TagController {
     }
 
     @PostMapping
-    public ResponseEntity<TagCreateResponse> createTag(@RequestBody TagCreateRequest request) {
-        TagCreateResponse response = tagService.createTag(request);
+    public ResponseEntity<TagCreateResponse> createTag(
+            @Authorization Member member,
+            @RequestBody TagCreateRequest request
+    ) {
+        TagCreateResponse response = tagService.createTag(member, request);
         return ResponseEntity.ok(response);
     }
 
     @GetMapping
-    public ResponseEntity<List<TagListResponse>> getTags() {
-        List<TagListResponse> responses = tagService.getTags();
+    public ResponseEntity<List<TagListResponse>> getTags(@Authorization Member member) {
+        List<TagListResponse> responses = tagService.getTags(member);
         return ResponseEntity.ok(responses);
     }
 }
