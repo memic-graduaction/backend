@@ -6,6 +6,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.example.memic.common.EnableMockMvc;
+import com.example.memic.common.database.NoTransactionExtension;
 import com.example.memic.member.dto.MemberSignInRequest;
 import com.example.memic.member.dto.MemberSignInResponse;
 import com.example.memic.phrase.dto.PhraseCreateRequest;
@@ -17,6 +18,7 @@ import java.util.List;
 import javax.sql.DataSource;
 import org.assertj.core.api.SoftAssertions;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
@@ -37,6 +39,7 @@ class PhraseIntegrationTest {
     private DataSource dataSource;
 
     @Test
+    @ExtendWith(NoTransactionExtension.class)
     void 특정_영상의_표현을_조회한다() throws Exception {
         Long transcriptionId = 1L;
         try (final var connection = dataSource.getConnection()) {

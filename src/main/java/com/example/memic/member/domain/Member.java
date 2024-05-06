@@ -29,7 +29,7 @@ public class Member {
     private Long id;
 
     @Email
-    @Column(name = "email", nullable = false, unique = true)
+    @Column(name = "email", nullable = false)
     private String email;
 
     @Column(name = "password", nullable = false)
