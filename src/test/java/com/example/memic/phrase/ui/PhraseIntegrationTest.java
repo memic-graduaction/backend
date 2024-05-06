@@ -46,8 +46,8 @@ class PhraseIntegrationTest {
             connection.createStatement().execute("SET FOREIGN_KEY_CHECKS=0");
             connection.createStatement().execute("INSERT INTO transcription (id, url) VALUES (1, 'test.com')");
             connection.createStatement().execute("INSERT INTO transcription_sentence (id, start_point, content, transcription_id) VALUES (1, '00:00:00', 'hello world', 1)");
-            connection.createStatement().execute("INSERT INTO tag (id, name, member_id) VALUES (1, 'tag1', 1)");
-            connection.createStatement().execute("INSERT INTO tag (id, name, member_id) VALUES (2, 'tag2', 1)");
+            connection.createStatement().execute("INSERT INTO tag (id, name) VALUES (1, 'tag1')");
+            connection.createStatement().execute("INSERT INTO tag (id, name) VALUES (2, 'tag2')");
             connection.createStatement().execute("INSERT INTO member (id, email, password) VALUES (1, 'test@gmail.com', '123')");
         }
 

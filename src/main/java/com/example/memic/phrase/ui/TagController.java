@@ -26,16 +26,15 @@ public class TagController {
 
     @PostMapping
     public ResponseEntity<TagCreateResponse> createTag(
-            @Authorization Member member,
             @RequestBody TagCreateRequest request
     ) {
-        TagCreateResponse response = tagService.createTag(member, request);
+        TagCreateResponse response = tagService.createTag(request);
         return ResponseEntity.ok(response);
     }
 
     @GetMapping
-    public ResponseEntity<List<TagListResponse>> getTags(@Authorization Member member) {
-        List<TagListResponse> responses = tagService.getTags(member);
+    public ResponseEntity<List<TagListResponse>> getTags() {
+        List<TagListResponse> responses = tagService.getTags();
         return ResponseEntity.ok(responses);
     }
 }

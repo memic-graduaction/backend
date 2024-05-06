@@ -20,15 +20,15 @@ public class TagService {
     }
 
     @Transactional
-    public TagCreateResponse createTag(final Member member, final TagCreateRequest request) {
-        final Tag newTag = new Tag(request.name(), member);
+    public TagCreateResponse createTag (final TagCreateRequest request) {
+        final Tag newTag = new Tag(request.name());
         final Tag saved = tagRepository.save(newTag);
         return new TagCreateResponse(saved.getId());
     }
 
     @Transactional(readOnly = true)
-    public List<TagListResponse> getTags(final Member member) {
-        List<Tag> tags = tagRepository.findAllByMember(member);
+    public List<TagListResponse> getTags() {
+        List<Tag> tags = tagRepository.findAll();
         return TagListResponse.from(tags);
     }
 }
