@@ -51,22 +51,21 @@ public class RecognizedSentence {
             if (validLastTargetWordIndex < validFirstTargetWordIndex) {
                 validFirstTargetWordIndex = validLastTargetWordIndex;
             }
-
-            if (containsInValidRange(originalWords, validFirstTargetWordIndex, validLastTargetWordIndex, targetWord)) {
-                targetWord.match();
-            }
+            checkSubSentenceContainsWord(originalWords, validFirstTargetWordIndex, validLastTargetWordIndex, targetWord);
         }
         return recognizedWords;
     }
 
-    private boolean containsInValidRange(
+    private void checkSubSentenceContainsWord(
             List<String> originalWords,
             int validFirstTargetWordIndex,
             int validLastTargetWordIndex,
             RecognizedWord targetWord
     ) {
-        return originalWords.subList(validFirstTargetWordIndex, validLastTargetWordIndex)
-                            .contains(targetWord.getWord());
+        originalWords.subList(validFirstTargetWordIndex, validLastTargetWordIndex)
+                     .stream()
+                     .map(word -> word.replaceAll("[^a-zA-Z]", ""))
+                     .forEach(targetWord::checkMatched);
     }
 
     private void validate(String content) {

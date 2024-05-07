@@ -29,6 +29,24 @@ class RecognizedTranscriptionSentenceTest {
     }
 
     @Test
+    void 문장이_일치하면_대소문자_여부와_관계없이_Recognized_Word의_일치여부가_전부_True이다() {
+        //given
+        final var originalSentence = sentenceWithoutTranscription("This, is a test.");
+        final var rawRecognizedSentence = "this IS A Test.";
+
+        //when
+        final var recognizedSentence = new RecognizedSentence(rawRecognizedSentence, originalSentence);
+
+        //then
+        assertTrue(
+                recognizedSentence.getRecognizedWords()
+                                  .stream()
+                                  .allMatch(RecognizedWord::isMatchedWithTranscription)
+        );
+    }
+
+
+    @Test
     void 원본_문장에_없는_단어는_일치여부가_False이다() {
         //given
         final var originalSentence = sentenceWithoutTranscription("This is a test.");
