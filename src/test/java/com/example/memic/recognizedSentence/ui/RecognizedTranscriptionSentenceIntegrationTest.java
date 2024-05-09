@@ -42,7 +42,7 @@ class RecognizedTranscriptionSentenceIntegrationTest {
 
     @Test
     void 음성을_입력하면_문장을_추출한다() throws Exception {
-        final var transcription = new Transcription("https://test", Map.of(LocalTime.now(), "hello"));
+        final var transcription = new Transcription("https://test", Map.of(LocalTime.of(0, 0), "hello"));
         final var savedTranscription = transcriptionRepository.save(transcription);
         final var firstSentence = savedTranscription.getTranscriptionSentences().get(0);
 
