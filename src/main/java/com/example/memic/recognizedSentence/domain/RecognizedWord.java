@@ -27,7 +27,13 @@ public class RecognizedWord {
         this.isMatchedWithTranscription = false;
     }
 
-    void match() {
-        this.isMatchedWithTranscription = true;
+    void checkMatched(final String word) {
+        if (this.getWordWithoutPunctuation().equalsIgnoreCase(word)) {
+            this.isMatchedWithTranscription = true;
+        }
+    }
+
+    private String getWordWithoutPunctuation() {
+        return word.replaceAll("[^a-zA-Z0-9]", "");
     }
 }
