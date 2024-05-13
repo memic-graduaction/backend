@@ -11,7 +11,7 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 
 @Component
-@Profile("!local")
+@Profile({"prod", "dev"})
 public class YoutubeMp4Extractor implements Mp4Extractor {
 
     private final String outputFormat;
