@@ -8,11 +8,13 @@ import java.lang.annotation.Target;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Import;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.web.filter.CharacterEncodingFilter;
 
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
+@ActiveProfiles("test")
 @AutoConfigureMockMvc
 @Import(EnableMockMvc.Config.class)
 public @interface EnableMockMvc {
