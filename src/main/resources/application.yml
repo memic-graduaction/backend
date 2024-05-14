@@ -79,3 +79,4 @@ spring:
         show_sql: true
   flyway:
     enabled: false
+    
