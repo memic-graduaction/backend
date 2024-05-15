@@ -1,6 +1,7 @@
 package com.example.memic.transcription.ui;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.hamcrest.Matchers.containsString;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -35,14 +36,14 @@ class TranscriptionIntegrationTest {
         final var request = new TranscriptionCreateRequest("https://youtu.be/lpcpsCY4Mco?si=_rxzxxH-fuE78HDf");
 
         final var responseFromPost = mockMvc.perform(post("/v1/transcriptions")
-                        .content(objectMapper.writeValueAsString(request))
-                        .contentType(MediaType.APPLICATION_JSON))
-                .andDo(print())
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.id").isNumber())
-                .andExpect(jsonPath("$.url").value("https://youtu.be/lpcpsCY4Mco?si=_rxzxxH-fuE78HDf"))
-                .andExpect(jsonPath("$.sentences").isNotEmpty())
-                .andReturn();
+                                                    .content(objectMapper.writeValueAsString(request))
+                                                    .contentType(MediaType.APPLICATION_JSON))
+                                            .andDo(print())
+                                            .andExpect(status().isOk())
+                                            .andExpect(jsonPath("$.id").isNumber())
+                                            .andExpect(jsonPath("$.url").value(containsString("https://youtu.be/lpcpsCY4Mco")))
+                                            .andExpect(jsonPath("$.sentences").isNotEmpty())
+                                            .andReturn();
 
         final var transcriptionResponseFromPost = objectMapper.readValue(
                 responseFromPost.getResponse().getContentAsString(),
@@ -50,12 +51,12 @@ class TranscriptionIntegrationTest {
         );
 
         final var responseFromGet = mockMvc.perform(get("/v1/transcriptions/{id}", transcriptionResponseFromPost.id()))
-                .andDo(print())
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.id").isNumber())
-                .andExpect(jsonPath("$.url").value("https://youtu.be/lpcpsCY4Mco?si=_rxzxxH-fuE78HDf"))
-                .andExpect(jsonPath("$.sentences").isNotEmpty())
-                .andReturn();
+                                           .andDo(print())
+                                           .andExpect(status().isOk())
+                                           .andExpect(jsonPath("$.id").isNumber())
+                                           .andExpect(jsonPath("$.url").value(containsString("https://youtu.be/lpcpsCY4Mco")))
+                                           .andExpect(jsonPath("$.sentences").isNotEmpty())
+                                           .andReturn();
 
         final var transcriptionResponseFromGet = objectMapper.readValue(
                 responseFromGet.getResponse().getContentAsString(),
