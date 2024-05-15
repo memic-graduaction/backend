@@ -3,7 +3,7 @@ spring:
     import:
       - classpath:/memic-private/application.yml
   profiles:
-    active: dev
+    active: prod
 jwt:
   expiration: 3600
   key: memicmemic11memicmemicmemicmemicmem!cmemicmemicmemic
@@ -60,5 +60,7 @@ spring:
       hibernate:
         format_sql: true
         show_sql: true
+    database: mysql
+
   flyway:
     enabled: false
