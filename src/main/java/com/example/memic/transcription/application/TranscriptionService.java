@@ -28,12 +28,16 @@ public class TranscriptionService {
 
     @Transactional
     public TranscriptionResponse transcribe(TranscriptionCreateRequest request) {
-        String filePath = extractor.extractVideo(request.url());
-
-        Transcription transcription = whisperApiClient.transcribe(request.url(), filePath);
-        transcriptionRepository.save(transcription);
+        final Transcription transcription = transcriptionRepository.findByUrl(request.url())
+                                                                   .orElseGet(() -> transcribeNew(request));
 
         return TranscriptionResponse.fromEntity(transcription);
+    }
+
+    private Transcription transcribeNew(final TranscriptionCreateRequest request) {
+        String filePath = extractor.extractVideo(request.url());
+        Transcription transcribed = whisperApiClient.transcribe(request.url(), filePath);
+        return transcriptionRepository.save(transcribed);
     }
 
     @Transactional(readOnly = true)
