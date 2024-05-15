@@ -1,0 +1,20 @@
+spring:
+  datasource:
+    url: jdbc:h2:mem:testdb;MODE=MySQL;
+    driver-class-name: org.h2.Driver
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+    properties:
+      hibernate:
+        format_sql: true
+        show_sql: true
+  flyway:
+    enabled: false
+  config:
+    import:
+      - file:./src/main/resources/memic-private/application.yml
+
+jwt:
+  expiration: 3600
+  key: testestsetestfksgkdsgkkrsdfgkroksdgokreokgkoe
