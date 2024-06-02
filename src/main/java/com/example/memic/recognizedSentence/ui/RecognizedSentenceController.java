@@ -1,5 +1,7 @@
 package com.example.memic.recognizedSentence.ui;
 
+import com.example.memic.common.auth.LoginMember;
+import com.example.memic.member.domain.Member;
 import com.example.memic.recognizedSentence.application.RecognizedSentenceService;
 import com.example.memic.recognizedSentence.dto.RecognizedSentenceRequest;
 import com.example.memic.recognizedSentence.dto.RecognizedSentenceResponse;
@@ -23,9 +25,10 @@ public class RecognizedSentenceController {
     @PostMapping("/recognized-sentences")
     public ResponseEntity<RecognizedSentenceResponse> extractRecognizedSentence(
             @RequestPart MultipartFile speech,
-            @RequestPart RecognizedSentenceRequest sentence
+            @RequestPart RecognizedSentenceRequest sentence,
+            @LoginMember Member member
     ) {
-        RecognizedSentenceResponse response = recognizedSentenceService.transcribe(speech, sentence);
+        RecognizedSentenceResponse response = recognizedSentenceService.transcribe(speech, sentence, member);
         return ResponseEntity.ok(response);
     }
 }

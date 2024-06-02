@@ -6,6 +6,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.Transient;
 import jakarta.validation.constraints.Email;
 import java.util.regex.Pattern;
 import lombok.Builder;
@@ -18,6 +19,9 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 public class Member {
+
+    @Transient
+    public static final Member NON_MEMBER = new Member(-1L, "non-member@non.com", "non-member");
 
     private static final String LOCAL_PARTS_PATTERN = "^(?=.{1,64}@)[A-Za-z0-9\\+_-]+(\\.[A-Za-z0-9\\+_-]+)*@";
     private static final String DOMAIN_PATTERN = "[^-][A-Za-z0-9\\+-]+(\\.[A-Za-z0-9\\+-]+)*(\\.[A-Za-z]{2,})$";
@@ -35,11 +39,16 @@ public class Member {
     @Column(name = "password", nullable = false)
     private String password;
 
-    @Builder
-    public Member(final String email, final String password) {
-        validateEmail(email);
+    private Member(final Long id, final String email, final String password) {
+        this.id = id;
         this.email = email;
         this.password = password;
+    }
+
+    @Builder
+    public Member(final String email, final String password) {
+        this(null, email, password);
+        validateEmail(email);
     }
 
     private void validateEmail(String input) {

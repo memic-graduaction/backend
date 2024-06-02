@@ -1,5 +1,6 @@
 package com.example.memic.recognizedSentence.domain;
 
+import com.example.memic.member.domain.Member;
 import com.example.memic.recognizedSentence.exception.InvalidRecognizedException;
 import com.example.memic.transcription.domain.TranscriptionSentence;
 import jakarta.persistence.CascadeType;
@@ -8,12 +9,16 @@ import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
+import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.CreationTimestamp;
 
 @Entity
 @NoArgsConstructor
@@ -30,9 +35,28 @@ public class RecognizedSentence {
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
     private List<RecognizedWord> recognizedWords;
 
-    public RecognizedSentence(String recognizedSentence, TranscriptionSentence originalSentence) {
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "member_id")
+    private Member speaker;
+
+    @CreationTimestamp
+    private LocalDateTime spokenAt;
+
+    public RecognizedSentence(
+            String recognizedSentence,
+            TranscriptionSentence originalSentence
+    ) {
+        this(recognizedSentence, originalSentence, Member.NON_MEMBER);
+    }
+
+    public RecognizedSentence(
+            String recognizedSentence,
+            TranscriptionSentence originalSentence,
+            Member speaker
+    ) {
         validate(recognizedSentence);
-        recognizedWords = createRecognizedWords(recognizedSentence, originalSentence);
+        this.recognizedWords = createRecognizedWords(recognizedSentence, originalSentence);
+        this.speaker = speaker;
     }
 
     private List<RecognizedWord> createRecognizedWords(String recognizedSentence, TranscriptionSentence originalSentence) {
