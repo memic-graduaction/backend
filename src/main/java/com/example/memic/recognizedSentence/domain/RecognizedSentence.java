@@ -13,6 +13,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import java.time.LocalDateTime;
+import java.time.Month;
 import java.util.Arrays;
 import java.util.List;
 import lombok.Getter;
@@ -32,7 +33,7 @@ public class RecognizedSentence {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
     private List<RecognizedWord> recognizedWords;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -96,5 +97,9 @@ public class RecognizedSentence {
         if (content == null || content.isBlank()) {
             throw new InvalidRecognizedException("인식된 스크립트가 없습니다.");
         }
+    }
+
+    public boolean hasSpokenAt(Integer year, Month month) {
+        return spokenAt.getYear() == year && spokenAt.getMonth() == month;
     }
 }

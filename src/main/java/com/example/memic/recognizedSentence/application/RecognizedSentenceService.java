@@ -2,12 +2,17 @@ package com.example.memic.recognizedSentence.application;
 
 import com.example.memic.member.domain.Member;
 import com.example.memic.recognizedSentence.domain.RecognizedSentence;
+import com.example.memic.recognizedSentence.dto.RecognizedSentenceCountResponse;
 import com.example.memic.recognizedSentence.dto.RecognizedSentenceRequest;
 import com.example.memic.recognizedSentence.dto.RecognizedSentenceResponse;
 import com.example.memic.recognizedSentence.repository.RecognizedSentenceRepository;
 import com.example.memic.transcription.domain.TranscriptionSentence;
 import com.example.memic.transcription.domain.TranscriptionSentenceRepository;
 import com.example.memic.transcription.infrastructure.WhisperApiClient;
+import java.time.Month;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -42,5 +47,18 @@ public class RecognizedSentenceService {
         RecognizedSentence savedRecognizedSentence = recognizedSentenceRepository.save(recognizedSentence);
 
         return RecognizedSentenceResponse.of(savedRecognizedSentence, transcriptionSentence);
+    }
+
+    @Transactional(readOnly = true)
+    public List<RecognizedSentenceCountResponse> getRecognizedSentenceCounts(Integer year, Month month, Member member) {
+        Map<Integer, List<RecognizedSentence>> sentencesBySpokenMonth = recognizedSentenceRepository.findBySpeaker(member)
+                                                                                                    .stream()
+                                                                                                    .filter(sentence -> sentence.hasSpokenAt(year, month))
+                                                                                                    .collect(Collectors.groupingBy(sentence -> sentence.getSpokenAt()
+                                                                                                                                                       .getDayOfMonth()));
+        return sentencesBySpokenMonth.entrySet()
+                                     .stream()
+                                     .map(entry -> new RecognizedSentenceCountResponse(entry.getKey(), entry.getValue().size()))
+                                     .toList();
     }
 }
