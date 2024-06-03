@@ -1,5 +1,6 @@
 package com.example.memic.transcription.infrastructure;
 
+import com.example.memic.member.domain.Member;
 import com.example.memic.transcription.domain.Transcription;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
@@ -38,7 +39,7 @@ public class WhisperApiClient {
                 .build();
     }
 
-    public Transcription transcribe(String url, String filePath) {
+    public Transcription transcribe(String url, String filePath, Member member) {
         HttpEntity<MultiValueMap<String, Object>> requestEntity = creatRequestEntity(filePath);
         ResponseEntity<String> response = restTemplate.postForEntity("", requestEntity, String.class);
 
@@ -46,7 +47,7 @@ public class WhisperApiClient {
         String parsed = processTranscription(output);
         Map<LocalTime, String> sentences = parseLogText(parsed);
 
-        return new Transcription(url, sentences);
+        return new Transcription(url, sentences, member);
     }
 
     private HttpEntity<MultiValueMap<String, Object>> creatRequestEntity(String filePath) {

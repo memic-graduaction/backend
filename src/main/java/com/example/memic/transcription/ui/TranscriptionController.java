@@ -1,8 +1,10 @@
 package com.example.memic.transcription.ui;
 
+import com.example.memic.common.auth.LoginMember;
+import com.example.memic.member.domain.Member;
+import com.example.memic.transcription.application.TranscriptionService;
 import com.example.memic.transcription.dto.TranscriptionCreateRequest;
 import com.example.memic.transcription.dto.TranscriptionResponse;
-import com.example.memic.transcription.application.TranscriptionService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,9 +23,10 @@ public class TranscriptionController {
 
     @PostMapping("/transcriptions")
     public ResponseEntity<TranscriptionResponse> extractTranscription(
-            @RequestBody TranscriptionCreateRequest request
+            @RequestBody TranscriptionCreateRequest request,
+            @LoginMember Member member
     ) {
-        TranscriptionResponse responses = transcriptionService.transcribe(request);
+        TranscriptionResponse responses = transcriptionService.transcribe(request, member);
         return ResponseEntity.ok(responses);
     }
 
