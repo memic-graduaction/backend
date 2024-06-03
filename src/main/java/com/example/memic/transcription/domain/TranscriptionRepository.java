@@ -1,6 +1,8 @@
 package com.example.memic.transcription.domain;
 
+import com.example.memic.member.domain.Member;
 import jakarta.persistence.EntityNotFoundException;
+import java.util.List;
 import java.util.Optional;
 import org.springframework.data.repository.Repository;
 
@@ -16,4 +18,6 @@ public interface TranscriptionRepository extends Repository<Transcription, Long>
     Transcription save(Transcription transcription);
 
     Optional<Transcription> findByUrl(String url);
+
+    List<Transcription> findAllByMember(Member member);
 }

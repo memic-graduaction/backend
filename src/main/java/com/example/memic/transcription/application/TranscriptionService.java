@@ -5,8 +5,10 @@ import com.example.memic.transcription.domain.Transcription;
 import com.example.memic.transcription.domain.TranscriptionRepository;
 import com.example.memic.transcription.dto.TranscriptionCreateRequest;
 import com.example.memic.transcription.dto.TranscriptionResponse;
+import com.example.memic.transcription.dto.TranscriptionUrlListResponse;
 import com.example.memic.transcription.infrastructure.Mp4Extractor;
 import com.example.memic.transcription.infrastructure.WhisperApiClient;
+import java.util.List;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -45,5 +47,11 @@ public class TranscriptionService {
     public TranscriptionResponse getTranscription(Long id) {
         Transcription transcription = transcriptionRepository.getById(id);
         return TranscriptionResponse.fromEntity(transcription);
+    }
+
+    @Transactional(readOnly = true)
+    public List<TranscriptionUrlListResponse> getTranscriptionUrls(final Member member) {
+        List<Transcription> transcriptions = transcriptionRepository.findAllByMember(member);
+        return TranscriptionUrlListResponse.from(transcriptions);
     }
 }

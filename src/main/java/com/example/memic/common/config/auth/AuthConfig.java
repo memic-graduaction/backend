@@ -25,7 +25,7 @@ public class AuthConfig implements WebMvcConfigurer {
         registry.addInterceptor(authInterceptor)
                 .addPathPatterns("/**")
                 .excludePathPatterns("/v1/members/**")
-                .excludePathPatterns("/v1/transcriptions/**")
+                .excludePathPatterns("/v1/transcriptions/*")
                 .excludePathPatterns("/v1/recognized-sentences")
                 .excludePathPatterns("/v1/speeches/words")
                 .excludePathPatterns("/v1/translate")
