@@ -1,10 +1,13 @@
 package com.example.memic.transcription.ui;
 
+import com.example.memic.common.auth.Authorization;
 import com.example.memic.common.auth.LoginMember;
 import com.example.memic.member.domain.Member;
 import com.example.memic.transcription.application.TranscriptionService;
 import com.example.memic.transcription.dto.TranscriptionCreateRequest;
 import com.example.memic.transcription.dto.TranscriptionResponse;
+import com.example.memic.transcription.dto.TranscriptionUrlListResponse;
+import java.util.List;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -35,6 +38,14 @@ public class TranscriptionController {
             @PathVariable("id") Long id
     ) {
         TranscriptionResponse responses = transcriptionService.getTranscription(id);
+        return ResponseEntity.ok(responses);
+    }
+
+    @GetMapping("/transcriptions/my/all")
+    public ResponseEntity<List<TranscriptionUrlListResponse>> getTrancriptionUrl(
+            @Authorization Member member
+    ) {
+        List<TranscriptionUrlListResponse> responses = transcriptionService.getTranscriptionUrls(member);
         return ResponseEntity.ok(responses);
     }
 }
