@@ -1,5 +1,6 @@
 package com.example.memic.transcription.application;
 
+import com.example.memic.member.domain.Member;
 import com.example.memic.transcription.domain.Transcription;
 import com.example.memic.transcription.domain.TranscriptionRepository;
 import com.example.memic.transcription.dto.TranscriptionCreateRequest;
@@ -27,16 +28,16 @@ public class TranscriptionService {
     }
 
     @Transactional
-    public TranscriptionResponse transcribe(TranscriptionCreateRequest request) {
+    public TranscriptionResponse transcribe(final TranscriptionCreateRequest request, final Member member) {
         final Transcription transcription = transcriptionRepository.findByUrl(request.url())
-                                                                   .orElseGet(() -> transcribeNew(request));
+                                                                   .orElseGet(() -> transcribeNew(request, member));
 
         return TranscriptionResponse.fromEntity(transcription);
     }
 
-    private Transcription transcribeNew(final TranscriptionCreateRequest request) {
+    private Transcription transcribeNew(final TranscriptionCreateRequest request, final Member member) {
         String filePath = extractor.extractVideo(request.url());
-        Transcription transcribed = whisperApiClient.transcribe(request.url(), filePath);
+        Transcription transcribed = whisperApiClient.transcribe(request.url(), filePath, member);
         return transcriptionRepository.save(transcribed);
     }
 

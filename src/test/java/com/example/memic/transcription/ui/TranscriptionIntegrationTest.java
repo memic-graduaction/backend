@@ -13,6 +13,7 @@ import com.example.memic.transcription.dto.TranscriptionCreateRequest;
 import com.example.memic.transcription.dto.TranscriptionResponse;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.util.Comparator;
+import javax.sql.DataSource;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -31,8 +32,15 @@ class TranscriptionIntegrationTest {
     @Autowired
     private MockMvc mockMvc;
 
+    @Autowired
+    private DataSource dataSource;
+
     @Test
     void 유튜브_url을_입력하면_자막을_추출한다() throws Exception {
+        try (final var connection = dataSource.getConnection()) {
+            connection.createStatement().execute("SET FOREIGN_KEY_CHECKS=0");
+        }
+
         final var request = new TranscriptionCreateRequest("https://youtu.be/lpcpsCY4Mco?si=_rxzxxH-fuE78HDf");
 
         final var responseFromPost = mockMvc.perform(post("/v1/transcriptions")
