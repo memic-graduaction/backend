@@ -10,12 +10,14 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.List;
 import java.util.Map;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.CreationTimestamp;
 
 @Entity
 @NoArgsConstructor
@@ -29,6 +31,9 @@ public class Transcription {
 
     private String url;
 
+    @CreationTimestamp
+    private LocalDateTime transcribedAt;
+
     @ManyToOne
     @JoinColumn(name = "member_id")
     private Member member;
@@ -36,18 +41,18 @@ public class Transcription {
     @OneToMany(cascade = CascadeType.PERSIST, mappedBy = "transcription")
     private List<TranscriptionSentence> transcriptionSentences;
 
-    public Transcription(String url, Map<LocalTime, String> sentences) {
+    public Transcription(String url, Map<LocalTime, String> sentences, Member member) {
         validate(url);
         this.url = url;
         this.transcriptionSentences = sentences.entrySet().stream()
                                                .map(entry -> new TranscriptionSentence(this, entry.getKey(), entry.getValue()))
                                                .sorted()
                                                .toList();
+        this.member = member;
     }
 
-    public Transcription(String url, Map<LocalTime, String> sentences, Member member) {
-        this(url, sentences);
-        this.member = member;
+    public Transcription(String url, Map<LocalTime, String> sentences) {
+        this(url, sentences, Member.NON_MEMBER);
     }
 
     private void validate(String url) {

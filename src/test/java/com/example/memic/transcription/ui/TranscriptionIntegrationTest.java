@@ -89,10 +89,10 @@ class TranscriptionIntegrationTest {
         try (final var connection = dataSource.getConnection()) {
             connection.createStatement().execute("SET FOREIGN_KEY_CHECKS=0");
             connection.createStatement().execute("INSERT INTO member (id, email, password) VALUES (1, 'yunho@naver.com', '1234')");
-            connection.createStatement().execute("INSERT INTO transcription (id, url, member_id) VALUES (1, 'https://test01.com', 1)");
-            connection.createStatement().execute("INSERT INTO transcription (id, url, member_id) VALUES (2, 'https://test02.com', 1)");
-            connection.createStatement().execute("INSERT INTO transcription (id, url, member_id) VALUES (3, 'https://test02.com', 2)");
-            connection.createStatement().execute("INSERT INTO transcription (id, url, member_id) VALUES (4, 'https://test04.com', 1)");
+            connection.createStatement().execute("INSERT INTO transcription (id, url, member_id, transcribed_at) VALUES (1, 'https://test01.com', 1, '2024-06-04 12:34:56')");
+            connection.createStatement().execute("INSERT INTO transcription (id, url, member_id, transcribed_at) VALUES (2, 'https://test02.com', 1, '2024-06-04 12:34:56')");
+            connection.createStatement().execute("INSERT INTO transcription (id, url, member_id, transcribed_at) VALUES (3, 'https://test02.com', 2, '2024-06-04 12:34:56')");
+            connection.createStatement().execute("INSERT INTO transcription (id, url, member_id, transcribed_at) VALUES (4, 'https://test04.com', 1, '2024-06-04 12:34:56')");
         }
 
         final var signInRequest = new MemberSignInRequest("yunho@naver.com", "1234");
