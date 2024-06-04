@@ -26,13 +26,15 @@ public class AuthConfig implements WebMvcConfigurer {
                 .addPathPatterns("/**")
                 .excludePathPatterns("/v1/members/**")
                 .excludePathPatterns("/v1/transcriptions/*")
+                .excludePathPatterns("/v1/transcriptions")
                 .excludePathPatterns("/v1/recognized-sentences")
                 .excludePathPatterns("/v1/speeches/words")
                 .excludePathPatterns("/v1/translate")
                 .excludePathPatterns("/v1/tags");
 
         registry.addInterceptor(loginCheckerInterceptor)
-                .addPathPatterns("/v1/recognized-sentences");
+                .addPathPatterns("/v1/recognized-sentences")
+                .addPathPatterns("/v1/transcriptions");
     }
 
     @Override
