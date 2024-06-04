@@ -9,6 +9,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import com.example.memic.common.database.NoTransactionExtension;
 import com.example.memic.member.dto.MemberSignInRequest;
 import com.example.memic.member.dto.MemberSignInResponse;
 import com.example.memic.transcription.dto.SentenceResponse;
@@ -21,6 +22,7 @@ import java.util.Comparator;
 import java.util.List;
 import javax.sql.DataSource;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -85,6 +87,7 @@ class TranscriptionIntegrationTest {
     }
 
     @Test
+    @ExtendWith(NoTransactionExtension.class)
     void 사용자가_요청한_유튜브_url_목록을_반환한다() throws Exception {
         try (final var connection = dataSource.getConnection()) {
             connection.createStatement().execute("SET FOREIGN_KEY_CHECKS=0");

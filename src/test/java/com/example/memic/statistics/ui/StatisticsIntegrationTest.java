@@ -6,6 +6,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 
+import com.example.memic.common.database.NoTransactionExtension;
 import com.example.memic.member.dto.MemberSignInRequest;
 import com.example.memic.member.dto.MemberSignInResponse;
 import com.example.memic.statistics.dto.StatisticResponse;
@@ -16,6 +17,7 @@ import java.util.List;
 import javax.sql.DataSource;
 import org.assertj.core.api.SoftAssertions;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -37,6 +39,7 @@ class StatisticsIntegrationTest {
     private DataSource dataSource;
 
     @Test
+    @ExtendWith(NoTransactionExtension.class)
     void 사용자의_서비스_사용_기록을_반환한다() throws Exception {
         final var dayAgos = new ArrayList<>(List.of(
                 LocalDateTime.now().minusDays(1),
