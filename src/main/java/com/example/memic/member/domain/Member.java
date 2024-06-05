@@ -42,6 +42,10 @@ public class Member {
         this.password = password;
     }
 
+    public void updatePassword(final String password) {
+        this.password = password;
+    }
+
     private void validateEmail(String input) {
         if (input == null) {
             throw new InvalidMemberException("이메일은 null일 수 없습니다.");

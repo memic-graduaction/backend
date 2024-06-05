@@ -7,6 +7,7 @@ import com.example.memic.member.dto.MemberSignInRequest;
 import com.example.memic.member.dto.MemberSignInResponse;
 import com.example.memic.member.dto.MemberSignUpRequest;
 import com.example.memic.member.dto.MemberSignUpResponse;
+import com.example.memic.member.dto.UpdatePasswordRequest;
 import com.example.memic.member.exception.InvalidPasswordException;
 import jakarta.persistence.EntityExistsException;
 import jakarta.persistence.EntityNotFoundException;
@@ -44,5 +45,10 @@ public class MemberService {
 
         String accessToken = jwtTokenProvider.createAccessToken(member.getId());
         return new MemberSignInResponse(member.getId(), accessToken);
+    }
+
+    public void updatePassword(final UpdatePasswordRequest request, final Member member) {
+        member.updatePassword(request.password());
+        memberRepository.save(member);
     }
 }
