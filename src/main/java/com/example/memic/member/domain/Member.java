@@ -20,12 +20,12 @@ import lombok.Setter;
 @NoArgsConstructor
 public class Member {
 
-    @Transient
-    public static final Member NON_MEMBER = new Member(-1L, "non-member@non.com", "non-member");
-
     private static final String LOCAL_PARTS_PATTERN = "^(?=.{1,64}@)[A-Za-z0-9\\+_-]+(\\.[A-Za-z0-9\\+_-]+)*@";
     private static final String DOMAIN_PATTERN = "[^-][A-Za-z0-9\\+-]+(\\.[A-Za-z0-9\\+-]+)*(\\.[A-Za-z]{2,})$";
     private static final Pattern EMAIL_REGEX = Pattern.compile(LOCAL_PARTS_PATTERN + DOMAIN_PATTERN);
+
+    @Transient
+    public static final Member NON_MEMBER = new Member(-1L, "non-member@memic.com", "non-member");
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -40,6 +40,7 @@ public class Member {
     private String password;
 
     private Member(final Long id, final String email, final String password) {
+        validateEmail(email);
         this.id = id;
         this.email = email;
         this.password = password;
@@ -48,7 +49,6 @@ public class Member {
     @Builder
     public Member(final String email, final String password) {
         this(null, email, password);
-        validateEmail(email);
     }
 
     private void validateEmail(String input) {
