@@ -9,6 +9,7 @@ import com.example.memic.transcription.dto.TranscriptionUrlListResponse;
 import com.example.memic.transcription.infrastructure.Mp4Extractor;
 import com.example.memic.transcription.infrastructure.WhisperApiClient;
 import java.util.List;
+import java.util.Optional;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -31,9 +32,12 @@ public class TranscriptionService {
 
     @Transactional
     public TranscriptionResponse transcribe(final TranscriptionCreateRequest request, final Member member) {
-        final Transcription transcription = transcriptionRepository.findByUrl(request.url())
-                                                                   .orElseGet(() -> transcribeNew(request, member));
+        final Optional<Transcription> transcriptions = transcriptionRepository.findByUrl(request.url())
+                                                                              .stream()
+                                                                              .filter(transcription -> transcription.isEqualsByMember(member))
+                                                                              .findAny();
 
+        final Transcription transcription = transcriptions.orElseGet(() -> transcribeNew(request, member));
         return TranscriptionResponse.fromEntity(transcription);
     }
 

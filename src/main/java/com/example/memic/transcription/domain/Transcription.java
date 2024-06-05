@@ -55,6 +55,11 @@ public class Transcription {
         this(url, sentences, Member.NON_MEMBER);
     }
 
+    public boolean isEqualsByMember(final Member member) {
+        return this.member.equals(member);
+    }
+
+
     private void validate(String url) {
         if (!url.startsWith("https://")) {
             throw new InvalidTranscriptionException("https 형식의 오디오 주소가 아닙니다.");
