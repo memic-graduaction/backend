@@ -18,7 +18,7 @@ public interface TranscriptionRepository extends Repository<Transcription, Long>
 
     Transcription save(Transcription transcription);
 
-    Optional<Transcription> findByUrl(String url);
+    List<Transcription> findByUrl(String url);
 
     List<Transcription> findAllByMember(Member member);
 
