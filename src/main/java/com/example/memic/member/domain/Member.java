@@ -1,6 +1,7 @@
 package com.example.memic.member.domain;
 
 import com.example.memic.member.exception.InvalidMemberException;
+import com.example.memic.member.exception.InvalidPasswordException;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -40,6 +41,20 @@ public class Member {
         validateEmail(email);
         this.email = email;
         this.password = password;
+    }
+
+    public void updatePassword(final String password) {
+        this.password = password;
+    }
+
+    public void checkPassword(final String inputPassword) {
+        if (!isEqualsPassword(inputPassword)) {
+            throw new InvalidPasswordException("비밀번호가 일치하지 않습니다.");
+        }
+    }
+
+    private boolean isEqualsPassword(final String inputPassword) {
+        return this.password.equals(inputPassword);
     }
 
     private void validateEmail(String input) {

@@ -7,6 +7,7 @@ import com.example.memic.member.dto.MemberSignInRequest;
 import com.example.memic.member.dto.MemberSignInResponse;
 import com.example.memic.member.dto.MemberSignUpRequest;
 import com.example.memic.member.dto.MemberSignUpResponse;
+import com.example.memic.member.dto.UpdatePasswordRequest;
 import jakarta.persistence.EntityExistsException;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Service;
@@ -37,7 +38,14 @@ public class MemberService {
         Member member = memberRepository.findByEmail(request.email())
                 .orElseThrow(() -> new EntityNotFoundException("해당 이메일에 대한 계정 정보가 없습니다."));
 
+        member.checkPassword(request.password());
+
         String accessToken = jwtTokenProvider.createAccessToken(member.getId());
         return new MemberSignInResponse(member.getId(), accessToken);
+    }
+
+    public void updatePassword(final UpdatePasswordRequest request, final Member member) {
+        member.updatePassword(request.password());
+        memberRepository.save(member);
     }
 }
