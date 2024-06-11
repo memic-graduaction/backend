@@ -26,7 +26,7 @@ public class Member {
     private static final Pattern EMAIL_REGEX = Pattern.compile(LOCAL_PARTS_PATTERN + DOMAIN_PATTERN);
 
     @Transient
-    public static final Member NON_MEMBER = new Member(-1L, "non-member@memic.com", "non-member");
+    public static final Member NON_MEMBER = new Member(1L, "non-member@memic.com", "non-member");
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

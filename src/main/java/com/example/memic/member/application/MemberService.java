@@ -28,7 +28,7 @@ public class MemberService {
 
     @PostConstruct
     public void saveNonMember() {
-        this.memberRepository.findById(Member.NON_MEMBER.getId())
+        this.memberRepository.findByEmail(Member.NON_MEMBER.getEmail())
                              .ifPresentOrElse(
                                      ignored -> {
                                      },
