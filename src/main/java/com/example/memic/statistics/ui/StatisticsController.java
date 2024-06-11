@@ -22,10 +22,11 @@ public class StatisticsController {
 
     @GetMapping("/statistics")
     public ResponseEntity<StatisticResponse> getStatistic(
+            @RequestParam Integer year,
             @RequestParam Integer month,
             @Authorization Member member
     ) {
-        StatisticResponse response = statisticService.getStatistic(month, member);
+        StatisticResponse response = statisticService.getStatistic(year, month, member);
         return ResponseEntity.ok(response);
     }
 }

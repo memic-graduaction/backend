@@ -2,7 +2,6 @@ package com.example.memic.transcription.domain;
 
 import com.example.memic.member.domain.Member;
 import jakarta.persistence.EntityNotFoundException;
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.data.jpa.repository.Query;
@@ -25,5 +24,12 @@ public interface TranscriptionRepository extends Repository<Transcription, Long>
     @Query("SELECT tm.transcription FROM TranscriptionMember tm WHERE tm.member = :member")
     List<Transcription> findAllByMember(@Param("member") Member member);
 
-    List<Transcription> findByTranscribedAtAfterAndMembers_Member(LocalDateTime oneMonthAgo, Member member);
+    @Query("""
+            SELECT t FROM Transcription t 
+            JOIN t.members tm 
+            WHERE YEAR(t.transcribedAt) = :year 
+            AND MONTH(t.transcribedAt) = :month 
+            AND tm.member = :member
+            """)
+    List<Transcription> findByYearMonthAndMember(@Param("year") Integer year, @Param("month") Integer month, @Param("member") Member member);
 }
