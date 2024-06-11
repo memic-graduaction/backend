@@ -5,7 +5,9 @@ import jakarta.persistence.EntityNotFoundException;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.Repository;
+import org.springframework.data.repository.query.Param;
 
 public interface TranscriptionRepository extends Repository<Transcription, Long> {
 
@@ -18,9 +20,10 @@ public interface TranscriptionRepository extends Repository<Transcription, Long>
 
     Transcription save(Transcription transcription);
 
-    List<Transcription> findByUrl(String url);
+    Optional<Transcription> findByUrl(String url);
 
-    List<Transcription> findAllByMember(Member member);
+    @Query("SELECT tm.transcription FROM TranscriptionMember tm WHERE tm.member = :member")
+    List<Transcription> findAllByMember(@Param("member") Member member);
 
-    List<Transcription> findByTranscribedAtAfterAndMember(LocalDateTime oneMonthAgo, Member member);
+    List<Transcription> findByTranscribedAtAfterAndMembers_Member(LocalDateTime oneMonthAgo, Member member);
 }

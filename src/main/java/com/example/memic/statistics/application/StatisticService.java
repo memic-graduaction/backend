@@ -27,7 +27,7 @@ public class StatisticService {
         LocalDateTime monthAgo = LocalDateTime.now().minusMonths(month);
 
         List<RecognizedSentence> recentRecognizedSentences = recognizedSentenceRepository.findBySpokenAtAfterAndSpeaker(monthAgo, member);
-        List<Transcription> recentTranscriptions = transcriptionRepository.findByTranscribedAtAfterAndMember(monthAgo, member);
+        List<Transcription> recentTranscriptions = transcriptionRepository.findByTranscribedAtAfterAndMembers_Member(monthAgo, member);
 
         Set<LocalDate> uniqueDates = new HashSet<>();
 

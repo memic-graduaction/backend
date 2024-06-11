@@ -1,2 +1,0 @@
-ALTER TABLE transcription ADD COLUMN member_id BIGINT;
-ALTER TABLE transcription ADD COLUMN transcribed_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP;
