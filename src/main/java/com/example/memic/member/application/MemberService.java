@@ -7,6 +7,7 @@ import com.example.memic.member.dto.MemberSignInRequest;
 import com.example.memic.member.dto.MemberSignInResponse;
 import com.example.memic.member.dto.MemberSignUpRequest;
 import com.example.memic.member.dto.MemberSignUpResponse;
+import jakarta.annotation.PostConstruct;
 import com.example.memic.member.dto.UpdatePasswordRequest;
 import jakarta.persistence.EntityExistsException;
 import jakarta.persistence.EntityNotFoundException;
@@ -18,10 +19,22 @@ public class MemberService {
     private final JwtTokenProvider jwtTokenProvider;
     private final MemberRepository memberRepository;
 
-    public MemberService(final JwtTokenProvider jwtTokenProvider,
-                         final MemberRepository memberRepository) {
+    public MemberService(
+            final JwtTokenProvider jwtTokenProvider,
+            final MemberRepository memberRepository
+    ) {
         this.jwtTokenProvider = jwtTokenProvider;
         this.memberRepository = memberRepository;
+    }
+
+    @PostConstruct
+    public void saveNonMember() {
+        this.memberRepository.findById(Member.NON_MEMBER.getId())
+                             .ifPresentOrElse(
+                                     ignored -> {
+                                     },
+                                     () -> this.memberRepository.save(Member.NON_MEMBER)
+                             );
     }
 
     public MemberSignUpResponse signUp(final MemberSignUpRequest request) {
@@ -36,7 +49,7 @@ public class MemberService {
 
     public MemberSignInResponse signIn(final MemberSignInRequest request) {
         Member member = memberRepository.findByEmail(request.email())
-                .orElseThrow(() -> new EntityNotFoundException("해당 이메일에 대한 계정 정보가 없습니다."));
+                                        .orElseThrow(() -> new EntityNotFoundException("해당 이메일에 대한 계정 정보가 없습니다."));
 
         member.checkPassword(request.password());
 

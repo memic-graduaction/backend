@@ -1,0 +1,2 @@
+ALTER TABLE recognized_sentence ADD COLUMN member_id BIGINT;
+ALTER TABLE recognized_sentence ADD COLUMN spoken_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP;
