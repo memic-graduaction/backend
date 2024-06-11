@@ -50,7 +50,8 @@ public class Member {
     @Builder
     public Member(final String email, final String password) {
         this(null, email, password);
-      
+    }
+
     public void updatePassword(final String password) {
         this.password = password;
     }
