@@ -26,7 +26,6 @@ public class TranscriptionMember {
     @JoinColumn(name = "transcription_id")
     private Transcription transcription;
 
-
     @ManyToOne
     @JoinColumn(name = "member_id")
     private Member member;
