@@ -5,6 +5,7 @@ import com.example.memic.common.auth.LoginMember;
 import com.example.memic.member.domain.Member;
 import com.example.memic.transcription.application.TranscriptionService;
 import com.example.memic.transcription.dto.TranscriptionCreateRequest;
+import com.example.memic.transcription.dto.TranscriptionRecentListResponse;
 import com.example.memic.transcription.dto.TranscriptionResponse;
 import com.example.memic.transcription.dto.TranscriptionUrlListResponse;
 import java.util.List;
@@ -46,6 +47,14 @@ public class TranscriptionController {
             @Authorization Member member
     ) {
         List<TranscriptionUrlListResponse> responses = transcriptionService.getTranscriptionUrls(member);
+        return ResponseEntity.ok(responses);
+    }
+
+    @GetMapping("/transcriptions/recent/all")
+    public ResponseEntity<List<TranscriptionRecentListResponse>> getTranscriptionsRecent(
+            @Authorization Member member
+    ) {
+        List<TranscriptionRecentListResponse> responses = transcriptionService.getTranscriptionsRecent(member);
         return ResponseEntity.ok(responses);
     }
 }

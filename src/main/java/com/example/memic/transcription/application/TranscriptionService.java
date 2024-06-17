@@ -8,6 +8,7 @@ import com.example.memic.transcription.dto.TranscriptionResponse;
 import com.example.memic.transcription.dto.TranscriptionUrlListResponse;
 import com.example.memic.transcription.infrastructure.Mp4Extractor;
 import com.example.memic.transcription.infrastructure.WhisperApiClient;
+import com.example.memic.transcription.dto.TranscriptionRecentListResponse;
 import java.util.List;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -54,5 +55,13 @@ public class TranscriptionService {
     public List<TranscriptionUrlListResponse> getTranscriptionUrls(final Member member) {
         List<Transcription> transcriptions = transcriptionRepository.findAllByMember(member);
         return TranscriptionUrlListResponse.from(transcriptions);
+    }
+
+    public List<TranscriptionRecentListResponse> getTranscriptionsRecent(final Member member) {
+        return transcriptionRepository.findAllByMember(member)
+                                      .stream()
+                                      .sorted((a, b) -> b.getTranscribedAt().compareTo(a.getTranscribedAt()))
+                                      .map(TranscriptionRecentListResponse::fromEntity)
+                                      .toList();
     }
 }
