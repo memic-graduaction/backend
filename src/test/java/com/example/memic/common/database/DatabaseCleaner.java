@@ -2,16 +2,24 @@ package com.example.memic.common.database;
 
 import jakarta.persistence.EntityManager;
 import java.util.List;
+import lombok.SneakyThrows;
 import org.springframework.context.ApplicationContext;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.transaction.support.TransactionTemplate;
 
 public abstract class DatabaseCleaner {
 
+    @SneakyThrows
     public static void clear(ApplicationContext applicationContext) {
         var entityManager = applicationContext.getBean(EntityManager.class);
         var jdbcTemplate = applicationContext.getBean(JdbcTemplate.class);
         var transactionTemplate = applicationContext.getBean(TransactionTemplate.class);
+
+        try (var connection = jdbcTemplate.getDataSource().getConnection()) {
+            if (!connection.getMetaData().getDriverName().contains("H2")) {
+                throw new UnsupportedOperationException("Database Cleaning not supported.");
+            }
+        }
 
         transactionTemplate.execute(status -> {
             entityManager.clear();

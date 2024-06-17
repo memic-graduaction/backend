@@ -37,4 +37,13 @@ public class ScrapService {
                               .map(ScrapResponse::fromEntity)
                               .toList();
     }
+
+    public void deleteScrap(Member member, Long id) {
+        Scrap scrap = scrapRepository.findById(id)
+                                     .orElseThrow(() -> new InvalidTranscriptionException("스크랩을 찾을 수 없습니다."));
+        if (scrap.isNotOwner(member)) {
+            throw new InvalidTranscriptionException("본인이 작성한 스크랩만 삭제할 수 있습니다.");
+        }
+        scrapRepository.delete(scrap);
+    }
 }
