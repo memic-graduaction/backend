@@ -1,5 +1,6 @@
 package com.example.memic.common.exception;
 
+import com.example.memic.common.exception.sender.InternalServerErrorMessageConverter;
 import io.jsonwebtoken.ExpiredJwtException;
 import jakarta.servlet.http.HttpServletRequest;
 import java.util.Arrays;
@@ -16,6 +17,11 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 public class ApiExceptionHandler {
 
     private final Logger logger = LoggerFactory.getLogger(ApiExceptionHandler.class);
+    private final InternalServerErrorMessageConverter messageConverter;
+
+    public ApiExceptionHandler(InternalServerErrorMessageConverter messageConverter) {
+        this.messageConverter = messageConverter;
+    }
 
     @ExceptionHandler
     public ResponseEntity<String> handleHttpException(HttpException e, HttpServletRequest request) {
@@ -42,7 +48,7 @@ public class ApiExceptionHandler {
     public ResponseEntity<String> handleException(Exception e, HttpServletRequest request) {
         doLogging(e, request);
         return ResponseEntity.internalServerError()
-                             .body("서버 내부 에러");
+                             .body(messageConverter.convert(e));
     }
 
     private void doLogging(final Exception e, HttpServletRequest request) {
