@@ -9,6 +9,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Transient;
 import jakarta.validation.constraints.Email;
+import java.util.Objects;
 import java.util.regex.Pattern;
 import lombok.Builder;
 import lombok.Getter;
@@ -26,7 +27,7 @@ public class Member {
     private static final Pattern EMAIL_REGEX = Pattern.compile(LOCAL_PARTS_PATTERN + DOMAIN_PATTERN);
 
     @Transient
-    public static final Member NON_MEMBER = new Member(-1L, "non-member@memic.com", "non-member");
+    public static final Member NON_MEMBER = new Member(1L, "non-member@memic.com", "non-member");
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -76,5 +77,22 @@ public class Member {
 
     private boolean isNotMatchEmailForm(final String value) {
         return !EMAIL_REGEX.matcher(value).matches();
+    }
+
+    @Override
+    public boolean equals(final Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        final Member member = (Member) o;
+        return Objects.equals(getEmail(), member.getEmail());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getEmail());
     }
 }

@@ -7,12 +7,12 @@ services:
     image: mysql:8.0
     platform: linux/amd64
     environment:
-      - MYSQL_DATABASE=memic
+      - MYSQL_DATABASE=test
       - MYSQL_ROOT_PASSWORD=1234
-      # - MYSQL_USER=user
+      - MYSQL_USER=memic
       - MYSQL_PASSWORD=1234
     ports:
-      - "3307:3306"
+      - "3306:3306"
     volumes:
       - mysql_data:/var/lib/mysql
 

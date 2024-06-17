@@ -16,6 +16,7 @@ import java.nio.file.Files;
 import java.time.LocalTime;
 import java.util.Map;
 import java.util.stream.Collectors;
+import javax.sql.DataSource;
 import org.assertj.core.api.SoftAssertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,8 +41,15 @@ class RecognizedTranscriptionSentenceIntegrationTest {
     @Autowired
     private TranscriptionRepository transcriptionRepository;
 
+    @Autowired
+    private DataSource dataSource;
+
     @Test
     void 음성을_입력하면_문장을_추출한다() throws Exception {
+        try (final var connection = dataSource.getConnection()) {
+            connection.createStatement().execute("SET FOREIGN_KEY_CHECKS=0");
+        }
+
         final var transcription = new Transcription("https://test", Map.of(LocalTime.of(0, 0), "hello"));
         final var savedTranscription = transcriptionRepository.save(transcription);
         final var firstSentence = savedTranscription.getTranscriptionSentences().get(0);
