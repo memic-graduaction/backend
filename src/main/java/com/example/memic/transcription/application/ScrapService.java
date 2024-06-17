@@ -2,13 +2,13 @@ package com.example.memic.transcription.application;
 
 import com.example.memic.member.domain.Member;
 import com.example.memic.transcription.domain.Scrap;
+import com.example.memic.transcription.domain.ScrapRepository;
 import com.example.memic.transcription.domain.Transcription;
 import com.example.memic.transcription.domain.TranscriptionRepository;
 import com.example.memic.transcription.dto.ScrapCreateRequest;
 import com.example.memic.transcription.dto.ScrapCreatedResponse;
 import com.example.memic.transcription.dto.ScrapResponse;
 import com.example.memic.transcription.exception.InvalidTranscriptionException;
-import com.example.memic.transcription.infrastructure.ScrapRepository;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
