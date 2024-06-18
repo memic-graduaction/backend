@@ -7,7 +7,7 @@ public record TranscriptionRecentListResponse(
         String url
 ) {
 
-    public static TranscriptionRecentListResponse fromEntity(final Transcription transcription) {
+    public static TranscriptionRecentListResponse fromEntity(Transcription transcription) {
         return new TranscriptionRecentListResponse(
                 transcription.getId(),
                 transcription.getUrl()
