@@ -32,6 +32,10 @@ public class TranscriptionService {
     @Transactional
     public TranscriptionResponse transcribe(final TranscriptionCreateRequest request, final Member member) {
         Transcription transcription = transcriptionRepository.findByUrl(request.url())
+                                                             .map(t -> {
+                                                                 t.addMember(member);
+                                                                 return t;
+                                                             })
                                                              .orElseGet(() -> transcribeNew(request, member));
 
         return TranscriptionResponse.fromEntity(transcription);
