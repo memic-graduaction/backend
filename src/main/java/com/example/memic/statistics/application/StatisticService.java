@@ -2,7 +2,7 @@ package com.example.memic.statistics.application;
 
 import com.example.memic.member.domain.Member;
 import com.example.memic.recognizedSentence.domain.RecognizedSentence;
-import com.example.memic.recognizedSentence.repository.RecognizedSentenceRepository;
+import com.example.memic.recognizedSentence.domain.RecognizedSentenceRepository;
 import com.example.memic.statistics.dto.StatisticResponse;
 import com.example.memic.transcription.domain.Transcription;
 import com.example.memic.transcription.domain.TranscriptionRepository;
