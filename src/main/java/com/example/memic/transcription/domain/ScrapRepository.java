@@ -16,4 +16,6 @@ public interface ScrapRepository extends Repository<Scrap, Long> {
     Optional<Scrap> findById(Long id);
 
     void delete(Scrap scrap);
+
+    Optional<Scrap> findByMemberAndTranscription(Member member, Transcription transcription);
 }

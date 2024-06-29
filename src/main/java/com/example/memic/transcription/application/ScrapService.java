@@ -10,6 +10,7 @@ import com.example.memic.transcription.dto.ScrapCreatedResponse;
 import com.example.memic.transcription.dto.ScrapResponse;
 import com.example.memic.transcription.exception.InvalidTranscriptionException;
 import java.util.List;
+import java.util.concurrent.locks.Lock;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,13 +21,22 @@ public class ScrapService {
 
     private final ScrapRepository scrapRepository;
     private final TranscriptionRepository transcriptionRepository;
+    private final Lock lock;
 
     @Transactional
     public ScrapCreatedResponse createScrap(Member member, ScrapCreateRequest request) {
-        Transcription transcription = transcriptionRepository.findById(request.transcriptionId())
-                                                             .orElseThrow(() -> new InvalidTranscriptionException("스크랩 하려는 번역본을 찾을 수 없습니다."));
-        Scrap saved = scrapRepository.save(new Scrap(transcription, member));
-        return new ScrapCreatedResponse(saved.getId());
+        lock.lock();
+        Transcription transcription = transcriptionRepository.getById(request.transcriptionId());
+
+        Scrap scrap = scrapRepository.findByMemberAndTranscription(member, transcription)
+                                     .orElseGet(() -> createNewScrap(transcription, member));
+        lock.unlock();
+        return new ScrapCreatedResponse(scrap.getId());
+    }
+
+    private Scrap createNewScrap(Transcription transcription, Member member) {
+        Scrap scrap = new Scrap(transcription, member);
+        return scrapRepository.save(scrap);
     }
 
     @Transactional(readOnly = true)
