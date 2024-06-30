@@ -34,7 +34,7 @@ public class Transcription {
     @CreationTimestamp
     private LocalDateTime transcribedAt;
 
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "transcription", cascade = CascadeType.ALL)
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "transcription", cascade = CascadeType.ALL)
     private final List<TranscriptionMember> members = new ArrayList<>();
 
     @OneToMany(cascade = CascadeType.PERSIST, mappedBy = "transcription")

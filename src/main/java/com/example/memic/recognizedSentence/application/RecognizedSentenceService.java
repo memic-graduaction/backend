@@ -2,10 +2,10 @@ package com.example.memic.recognizedSentence.application;
 
 import com.example.memic.member.domain.Member;
 import com.example.memic.recognizedSentence.domain.RecognizedSentence;
+import com.example.memic.recognizedSentence.domain.RecognizedSentenceRepository;
 import com.example.memic.recognizedSentence.dto.RecognizedSentenceCountResponse;
 import com.example.memic.recognizedSentence.dto.RecognizedSentenceRequest;
 import com.example.memic.recognizedSentence.dto.RecognizedSentenceResponse;
-import com.example.memic.recognizedSentence.repository.RecognizedSentenceRepository;
 import com.example.memic.transcription.domain.TranscriptionSentence;
 import com.example.memic.transcription.domain.TranscriptionSentenceRepository;
 import com.example.memic.transcription.infrastructure.WhisperApiClient;
